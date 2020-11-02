@@ -1,0 +1,126 @@
+{ "frames": [
+   {
+    "filename": "hero 0.png",
+    "frame": { "x": 0, "y": 0, "w": 24, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 32 },
+    "sourceSize": { "w": 24, "h": 32 },
+    "duration": 100
+   },
+   {
+    "filename": "hero 1.png",
+    "frame": { "x": 24, "y": 0, "w": 24, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 32 },
+    "sourceSize": { "w": 24, "h": 32 },
+    "duration": 100
+   },
+   {
+    "filename": "hero 2.png",
+    "frame": { "x": 48, "y": 0, "w": 24, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 32 },
+    "sourceSize": { "w": 24, "h": 32 },
+    "duration": 100
+   },
+   {
+    "filename": "hero 3.png",
+    "frame": { "x": 72, "y": 0, "w": 24, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 32 },
+    "sourceSize": { "w": 24, "h": 32 },
+    "duration": 100
+   },
+   {
+    "filename": "hero 4.png",
+    "frame": { "x": 96, "y": 0, "w": 24, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 32 },
+    "sourceSize": { "w": 24, "h": 32 },
+    "duration": 100
+   },
+   {
+    "filename": "hero 5.png",
+    "frame": { "x": 120, "y": 0, "w": 24, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 32 },
+    "sourceSize": { "w": 24, "h": 32 },
+    "duration": 100
+   },
+   {
+    "filename": "hero 6.png",
+    "frame": { "x": 144, "y": 0, "w": 24, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 32 },
+    "sourceSize": { "w": 24, "h": 32 },
+    "duration": 100
+   },
+   {
+    "filename": "hero 7.png",
+    "frame": { "x": 168, "y": 0, "w": 24, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 32 },
+    "sourceSize": { "w": 24, "h": 32 },
+    "duration": 100
+   },
+   {
+    "filename": "hero 8.png",
+    "frame": { "x": 192, "y": 0, "w": 24, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 32 },
+    "sourceSize": { "w": 24, "h": 32 },
+    "duration": 100
+   },
+   {
+    "filename": "hero 9.png",
+    "frame": { "x": 216, "y": 0, "w": 24, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 32 },
+    "sourceSize": { "w": 24, "h": 32 },
+    "duration": 100
+   },
+   {
+    "filename": "hero 10.png",
+    "frame": { "x": 240, "y": 0, "w": 24, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 32 },
+    "sourceSize": { "w": 24, "h": 32 },
+    "duration": 100
+   },
+   {
+    "filename": "hero 11.png",
+    "frame": { "x": 264, "y": 0, "w": 24, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 32 },
+    "sourceSize": { "w": 24, "h": 32 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.25-x64",
+  "image": "hero-sheet.png",
+  "format": "RGBA8888",
+  "size": { "w": 288, "h": 32 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Sprite Sheet", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}
