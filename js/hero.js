@@ -1,4 +1,7 @@
-class Hero extends Unit {
+"use strict";
+import { Unit } from "./unit";
+
+export class Hero extends Unit {
   constructor(scene, x, y, z, texture, type, hp, damage) {
     super(scene, x, y, z, texture, type, hp, damage);
     //this.flipX = true;
