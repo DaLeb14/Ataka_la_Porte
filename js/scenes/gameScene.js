@@ -99,7 +99,150 @@ export class GameScene extends Phaser.Scene {
     genereEnnemis(this, cibleMonstre);
   }
 
-  update() {}
+  update() {
+    this.sorciere.body.setVelocityX(0);
+    this.sorciere.body.setVelocityY(0);
+
+    if (this.cursors.left.isDown && this.sorciere.x > 32) {
+      this.sorciere.direction = "left";
+      this.sorciere.play("walk-left");
+      this.sorciere.body.setVelocityX(-300);
+    } else if (this.cursors.right.isDown && this.sorciere.x < 1600) {
+      this.sorciere.direction = "right";
+      this.sorciere.play("walk-right");
+      this.sorciere.body.setVelocityX(300);
+    }
+
+    if (this.cursors.up.isDown && this.sorciere.y > 0) {
+      this.sorciere.direction = "up";
+      this.sorciere.play("walk-up");
+      this.sorciere.body.setVelocityY(-300);
+    } else if (this.cursors.down.isDown && this.sorciere.y < 1600) {
+      this.sorciere.direction = "down";
+      this.sorciere.play("walk-down");
+      this.sorciere.body.setVelocityY(300);
+    }
+
+    if (
+      this.cursors.up.isUp &&
+      this.cursors.down.isUp &&
+      this.cursors.right.isUp &&
+      this.cursors.left.isUp
+    ) {
+      this.sorciere.anims.stop();
+      this.sorciere.body.setVelocityX(0);
+      this.sorciere.body.setVelocityY(0);
+    }
+  }
 
   end() {}
+
+  genereEnnemis(scene, cibleMonstre) {
+    let nombreDePentagramme = 5;
+    let nombreDeMonstresParPentagramme = 2; //10;
+    let delaiVagueMonstre = 5000;
+    let coordonneesPentagrammeX = [400, 400, 800, 1200, 1200];
+    let coordonneesPentagrammeY = [800, 1200, 1400, 1200, 800];
+
+    for (let i = 0; i < nombreDePentagramme; i++) {
+      let nomPentagramme = "pentagramme" + i;
+      let temp = new Pentagramme(
+        scene,
+        coordonneesPentagrammeX[i],
+        coordonneesPentagrammeY[i],
+        5,
+        "pentagramme",
+        nomPentagramme,
+        32,
+        32
+      );
+      scene.add.existing(temp);
+      pentagrammes.set(nomPentagramme, temp);
+    }
+
+    genereMonstres(
+      scene,
+      0,
+      nombreDeMonstresParPentagramme,
+      delaiVagueMonstre,
+      cibleMonstre
+    );
+  }
+
+  genereMonstres(
+    scene,
+    numIteration,
+    nombreDeMonstresParPentagramme,
+    delaiVagueMonstre,
+    cibleMonstre
+  ) {
+    let numeroMonstre = 0;
+    let departAleatoireDesMonstres = 0;
+
+    for (let p of pentagrammes.values()) {
+      departAleatoireDesMonstres = Math.floor(Math.random() * Math.floor(4000));
+
+      var creationMonstre = function (posPentagramme) {
+        let idMonstre = "monstre" + numeroMonstre + numIteration;
+        let temp = new Monster(
+          scene,
+          posPentagramme.x,
+          posPentagramme.y,
+          50,
+          "monster",
+          idMonstre,
+          32,
+          32,
+          cibleMonstre
+        );
+        let layerTemp = this.mapLayers.get("mur_invisible_sans_porte");
+
+        monstres.set(idMonstre, temp);
+
+        scene.physics.add.collider(
+          temp,
+          layerTemp,
+          function () {
+            temp.eviteObstacle();
+          },
+          null,
+          null
+        );
+
+        scene.physics.add.collider(
+          temp,
+          sorciere,
+          function () {
+            temp.eviteObstacle();
+          },
+          null,
+          null
+        );
+
+        scene.add.existing(temp);
+
+        temp.avance();
+      };
+
+      setTimeout(function () {
+        creationMonstre(p);
+      }, departAleatoireDesMonstres);
+
+      numeroMonstre++;
+    }
+
+    numIteration++;
+
+    if (numIteration < nombreDeMonstresParPentagramme) {
+      setTimeout(function () {
+        genereMonstres(
+          scene,
+          numIteration,
+          nombreDeMonstresParPentagramme,
+          delaiVagueMonstre,
+          cibleMonstre
+        );
+      }, delaiVagueMonstre + departAleatoireDesMonstres);
+    }
+  }
 }
