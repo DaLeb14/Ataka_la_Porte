@@ -1,7 +1,7 @@
 "use strict";
 
-import { GameScene } from "./gameScene";
-import { TitleScene } from "./titleScene";
+import { GameScene } from "./scenes/gameScene";
+import { TitleScene } from "./scenes/titleScene";
 
 var gameScene = new GameScene();
 var titleScene = new TitleScene();

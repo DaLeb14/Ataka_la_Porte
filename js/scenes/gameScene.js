@@ -1,12 +1,18 @@
 "use strict";
 
-import { Hero } from "./hero";
-import { Monster } from "./monster";
+import { Hero } from "../units/hero";
+import { Monster } from "../units/monster";
 
 // Our scenes
 export class GameScene extends Phaser.Scene {
   constructor() {
     super({ key: "gameScene" });
+
+    this.sorciere;
+    this.mapLayers = new Map();
+    this.monstres = new Map();
+    this.pentagrammes = new Map();
+    this.cibleMonstre;
   }
 
   init() {}
@@ -57,12 +63,12 @@ export class GameScene extends Phaser.Scene {
     const layer6 = map.createStaticLayer("porte_invisible", tileset, 32, 32);
 
     // player hero
-    sorciere = new Hero(this, 800, 600, 50, "hero", "sorciere", 32, 32);
-    this.add.existing(sorciere);
+    this.sorciere = new Hero(this, 800, 600, 50, "hero", "sorciere", 32, 32);
+    this.add.existing(this.sorciere);
 
-    this.physics.add.collider(sorciere, layer2);
-    this.physics.add.collider(sorciere, layer5);
-    this.physics.add.collider(sorciere, layer6);
+    this.physics.add.collider(this.sorciere, layer2);
+    this.physics.add.collider(this.sorciere, layer5);
+    this.physics.add.collider(this.sorciere, layer6);
 
     layer2.setCollisionByExclusion([-1]);
     layer5.setCollisionByExclusion([-1]);
@@ -71,24 +77,24 @@ export class GameScene extends Phaser.Scene {
     //Pour que les monstres passent sous la porte...
     layer2.setDepth(100);
 
-    mapLayers.set("decor", layer1);
-    mapLayers.set("chemins", layer3);
-    mapLayers.set("pnj", layer4);
-    mapLayers.set("mur_invisible_sans_porte", layer5);
-    mapLayers.set("porte_invisible", layer6);
-    mapLayers.set("mur", layer2);
+    this.mapLayers.set("decor", layer1);
+    this.mapLayers.set("chemins", layer3);
+    this.mapLayers.set("pnj", layer4);
+    this.mapLayers.set("mur_invisible_sans_porte", layer5);
+    this.mapLayers.set("porte_invisible", layer6);
+    this.mapLayers.set("mur", layer2);
 
     //Evite les lignes noires autour des tiles
     this.cameras.main.roundPixels = true;
 
     //Autres
-    cursors = this.input.keyboard.createCursorKeys();
-    this.cameras.main.startFollow(sorciere, true, 0.08, 0.08);
+    this.cursors = this.input.keyboard.createCursorKeys();
+    this.cameras.main.startFollow(this.sorciere, true, 0.08, 0.08);
 
     //this.physics.world.on('collisionStart', monstreTouche);
 
     let level = 1;
-    cibleMonstre = [835, 403];
+    this.cibleMonstre = [835, 403];
     // player monster
     genereEnnemis(this, cibleMonstre);
   }
