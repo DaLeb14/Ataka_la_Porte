@@ -2,6 +2,7 @@
 
 import { Hero } from "../units/hero";
 import { Monster } from "../units/monster";
+import { Pentagramme } from "../sprites/pentagramme";
 
 // Our scenes
 export class GameScene extends Phaser.Scene {
@@ -96,7 +97,7 @@ export class GameScene extends Phaser.Scene {
     let level = 1;
     this.cibleMonstre = [835, 403];
     // player monster
-    genereEnnemis(this, cibleMonstre);
+    this.genereEnnemis();
   }
 
   update() {
@@ -137,17 +138,19 @@ export class GameScene extends Phaser.Scene {
 
   end() {}
 
-  genereEnnemis(scene, cibleMonstre) {
+  genereEnnemis() {
     let nombreDePentagramme = 5;
     let nombreDeMonstresParPentagramme = 2; //10;
     let delaiVagueMonstre = 5000;
     let coordonneesPentagrammeX = [400, 400, 800, 1200, 1200];
     let coordonneesPentagrammeY = [800, 1200, 1400, 1200, 800];
 
+    let myScene = this;
+
     for (let i = 0; i < nombreDePentagramme; i++) {
       let nomPentagramme = "pentagramme" + i;
       let temp = new Pentagramme(
-        scene,
+        myScene,
         coordonneesPentagrammeX[i],
         coordonneesPentagrammeY[i],
         5,
@@ -156,12 +159,12 @@ export class GameScene extends Phaser.Scene {
         32,
         32
       );
-      scene.add.existing(temp);
-      pentagrammes.set(nomPentagramme, temp);
+      this.add.existing(temp);
+      this.pentagrammes.set(nomPentagramme, temp);
     }
 
-    genereMonstres(
-      scene,
+    this.genereMonstres(
+      this.scene,
       0,
       nombreDeMonstresParPentagramme,
       delaiVagueMonstre,
@@ -179,7 +182,7 @@ export class GameScene extends Phaser.Scene {
     let numeroMonstre = 0;
     let departAleatoireDesMonstres = 0;
 
-    for (let p of pentagrammes.values()) {
+    for (let p of this.pentagrammes.values()) {
       departAleatoireDesMonstres = Math.floor(Math.random() * Math.floor(4000));
 
       var creationMonstre = function (posPentagramme) {
@@ -195,9 +198,9 @@ export class GameScene extends Phaser.Scene {
           32,
           cibleMonstre
         );
-        let layerTemp = this.mapLayers.get("mur_invisible_sans_porte");
+        let layerTemp = scene.mapLayers.get("mur_invisible_sans_porte");
 
-        monstres.set(idMonstre, temp);
+        this.monstres.set(idMonstre, temp);
 
         scene.physics.add.collider(
           temp,
@@ -235,7 +238,7 @@ export class GameScene extends Phaser.Scene {
 
     if (numIteration < nombreDeMonstresParPentagramme) {
       setTimeout(function () {
-        genereMonstres(
+        this.genereMonstres(
           scene,
           numIteration,
           nombreDeMonstresParPentagramme,

@@ -5,11 +5,28 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "pwa-chrome",
+      "name": "Launch Chrome against localhost, with sourcemaps",
+      "type": "chrome",
       "request": "launch",
-      "name": "Launch Chrome against localhost",
       "url": "http://localhost/Ataka_la_Porte/html/index.html",
-      "webRoot": "${workspaceFolder}"
+      // This forces chrome to run a brand new instance, allowing existing
+      // chrome windows to stay open.
+      "userDataDir": "${workspaceRoot}/.vscode/chrome",
+      "sourceMaps": true,
+      "webRoot": "${workspaceRoot}",
+      //"diagnosticLogging": true,
+      "sourceMapPathOverrides": { "webpack:///./*": "${webRoot}/*" }
+    },
+    {
+      "name": "Attach to Chrome, with sourcemaps",
+      "type": "chrome",
+      "request": "attach",
+      "url": "http://localhost/Ataka_la_Porte/html/index.html",
+      "port": 9222,
+      "sourceMaps": true,
+      "webRoot": "${workspaceRoot}",
+      "diagnosticLogging": true,
+      "sourceMapPathOverrides": { "webpack:///./*": "${webRoot}/*" }
     }
   ]
 }
