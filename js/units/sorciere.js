@@ -1,15 +1,12 @@
 "use strict";
 import { Unit } from "./unit";
 
-export class Hero extends Unit {
+export class Sorciere extends Unit {
   constructor(scene, x, y, z, texture, type, hp, damage) {
     super(scene, x, y, z, texture, type, hp, damage);
-    //this.flipX = true;
 
     //Agrandissement
     this.setScale(1.2);
-
-    scene.physics.add.existing(this);
 
     this.creeAnimations(scene, texture);
 

@@ -2,16 +2,14 @@
 import { Unit } from "./unit";
 
 export class Monster extends Unit {
-  constructor(scene, x, y, z, texture, type, hp, damage, cibleMonstre) {
+  constructor(scene, x, y, z, texture, type, hp, damage) {
     super(scene, x, y, z, texture, type, hp, damage);
 
     //Agrandissement
     this.setScale(1.3);
 
-    scene.physics.add.existing(this);
-
     this.creeAnimations(scene, texture);
-    this.cibleMonstre = cibleMonstre;
+    this.cibleMonstre = scene.cibleMonstre;
 
     this.direction = "up";
     this.play("monster-walk-up");
@@ -53,7 +51,7 @@ export class Monster extends Unit {
 
   corrigeTrajectoire() {
     let marcheDevant = Math.floor(Math.random() * Math.floor(2000));
-    let porteX = cibleMonstre[0];
+    let porteX = this.cibleMonstre[0];
 
     if (this.x > porteX) {
       this.gauche();

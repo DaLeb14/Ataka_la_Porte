@@ -10,5 +10,6 @@ export class Unit extends Phaser.GameObjects.Sprite {
     this.direction = null;
 
     this.setDepth(z);
+    scene.physics.add.existing(this);
   }
 }

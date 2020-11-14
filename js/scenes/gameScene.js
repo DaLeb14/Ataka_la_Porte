@@ -1,6 +1,6 @@
 "use strict";
 
-import { Hero } from "../units/hero";
+import { Sorciere } from "../units/sorciere";
 import { Monster } from "../units/monster";
 import { Pentagramme } from "../sprites/pentagramme";
 
@@ -64,8 +64,20 @@ export class GameScene extends Phaser.Scene {
     const layer6 = map.createStaticLayer("porte_invisible", tileset, 32, 32);
 
     // player hero
-    this.sorciere = new Hero(this, 800, 600, 50, "hero", "sorciere", 32, 32);
-    this.add.existing(this.sorciere);
+    this.sorciere = new Sorciere(
+      this,
+      800,
+      600,
+      100,
+      "hero",
+      "sorciere",
+      32,
+      32
+    );
+
+    // 0 : Dynamic body
+    //1 : Static body
+    this.add.existing(this.sorciere, 0);
 
     this.physics.add.collider(this.sorciere, layer2);
     this.physics.add.collider(this.sorciere, layer5);
@@ -103,6 +115,10 @@ export class GameScene extends Phaser.Scene {
   update() {
     this.sorciere.body.setVelocityX(0);
     this.sorciere.body.setVelocityY(0);
+
+    if (this.input.keyboard.addKey("SPACE").isDown) {
+      //this.input.keyboard.addKey('SPACE').isUp
+    }
 
     if (this.cursors.left.isDown && this.sorciere.x > 32) {
       this.sorciere.direction = "left";
@@ -145,12 +161,10 @@ export class GameScene extends Phaser.Scene {
     let coordonneesPentagrammeX = [400, 400, 800, 1200, 1200];
     let coordonneesPentagrammeY = [800, 1200, 1400, 1200, 800];
 
-    let myScene = this;
-
     for (let i = 0; i < nombreDePentagramme; i++) {
       let nomPentagramme = "pentagramme" + i;
       let temp = new Pentagramme(
-        myScene,
+        this,
         coordonneesPentagrammeX[i],
         coordonneesPentagrammeY[i],
         5,
@@ -159,25 +173,17 @@ export class GameScene extends Phaser.Scene {
         32,
         32
       );
-      this.add.existing(temp);
+      this.add.existing(temp, 1);
       this.pentagrammes.set(nomPentagramme, temp);
     }
 
-    this.genereMonstres(
-      this.scene,
-      0,
-      nombreDeMonstresParPentagramme,
-      delaiVagueMonstre,
-      cibleMonstre
-    );
+    this.genereMonstres(0, nombreDeMonstresParPentagramme, delaiVagueMonstre);
   }
 
   genereMonstres(
-    scene,
     numIteration,
     nombreDeMonstresParPentagramme,
-    delaiVagueMonstre,
-    cibleMonstre
+    delaiVagueMonstre
   ) {
     let numeroMonstre = 0;
     let departAleatoireDesMonstres = 0;
@@ -185,51 +191,52 @@ export class GameScene extends Phaser.Scene {
     for (let p of this.pentagrammes.values()) {
       departAleatoireDesMonstres = Math.floor(Math.random() * Math.floor(4000));
 
-      var creationMonstre = function (posPentagramme) {
-        let idMonstre = "monstre" + numeroMonstre + numIteration;
-        let temp = new Monster(
-          scene,
-          posPentagramme.x,
-          posPentagramme.y,
-          50,
-          "monster",
-          idMonstre,
-          32,
-          32,
-          cibleMonstre
-        );
-        let layerTemp = scene.mapLayers.get("mur_invisible_sans_porte");
+      setTimeout(
+        (unPentagramme) => {
+          {
+            let idMonstre = "monstre" + numeroMonstre + numIteration;
+            let temp = new Monster(
+              this,
+              unPentagramme.x,
+              unPentagramme.y,
+              50,
+              "monster",
+              idMonstre,
+              32,
+              32
+            );
+            let layerTemp = this.mapLayers.get("mur_invisible_sans_porte");
 
-        this.monstres.set(idMonstre, temp);
+            this.monstres.set(idMonstre, temp);
 
-        scene.physics.add.collider(
-          temp,
-          layerTemp,
-          function () {
-            temp.eviteObstacle();
-          },
-          null,
-          null
-        );
+            this.physics.add.collider(
+              temp,
+              layerTemp,
+              function () {
+                temp.eviteObstacle();
+              },
+              null,
+              null
+            );
 
-        scene.physics.add.collider(
-          temp,
-          sorciere,
-          function () {
-            temp.eviteObstacle();
-          },
-          null,
-          null
-        );
+            this.physics.add.collider(
+              temp,
+              this.sorciere,
+              function () {
+                temp.eviteObstacle();
+              },
+              null,
+              null
+            );
 
-        scene.add.existing(temp);
+            this.add.existing(temp, 0);
 
-        temp.avance();
-      };
-
-      setTimeout(function () {
-        creationMonstre(p);
-      }, departAleatoireDesMonstres);
+            temp.avance();
+          }
+        },
+        departAleatoireDesMonstres,
+        p
+      );
 
       numeroMonstre++;
     }
@@ -237,13 +244,11 @@ export class GameScene extends Phaser.Scene {
     numIteration++;
 
     if (numIteration < nombreDeMonstresParPentagramme) {
-      setTimeout(function () {
+      setTimeout(() => {
         this.genereMonstres(
-          scene,
           numIteration,
           nombreDeMonstresParPentagramme,
-          delaiVagueMonstre,
-          cibleMonstre
+          delaiVagueMonstre
         );
       }, delaiVagueMonstre + departAleatoireDesMonstres);
     }

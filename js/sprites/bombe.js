@@ -1,6 +1,6 @@
 "use strict";
 
-export class Pentagramme extends Phaser.GameObjects.Sprite {
+export class Bombe extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, z, texture, type) {
     super(scene, x, y, type, 0);
 
