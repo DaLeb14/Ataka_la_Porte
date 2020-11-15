@@ -3,6 +3,7 @@
 import { Sorciere } from "../units/sorciere";
 import { Monster } from "../units/monster";
 import { Pentagramme } from "../sprites/pentagramme";
+import { Bombe } from "../sprites/bombe";
 
 // Our scenes
 export class GameScene extends Phaser.Scene {
@@ -14,6 +15,7 @@ export class GameScene extends Phaser.Scene {
     this.monstres = new Map();
     this.pentagrammes = new Map();
     this.cibleMonstre;
+    this.spaceVerrou = false;
   }
 
   init() {}
@@ -38,6 +40,11 @@ export class GameScene extends Phaser.Scene {
       "pentagramme",
       "../assets/sprites/images/pentagramme.png",
       "../assets/sprites/pentagramme.json"
+    );
+    this.load.atlas(
+      "bomb",
+      "../assets/sprites/images/bomb-sheet.png",
+      "../assets/sprites/bomb.json"
     );
   }
 
@@ -89,6 +96,8 @@ export class GameScene extends Phaser.Scene {
 
     //Pour que les monstres passent sous la porte...
     layer2.setDepth(100);
+    //Pour les pnj sur le mur
+    layer4.setDepth(101);
 
     this.mapLayers.set("decor", layer1);
     this.mapLayers.set("chemins", layer3);
@@ -116,8 +125,25 @@ export class GameScene extends Phaser.Scene {
     this.sorciere.body.setVelocityX(0);
     this.sorciere.body.setVelocityY(0);
 
+    if (this.input.keyboard.addKey("SPACE").isUp) {
+      this.spaceVerrou = false;
+    }
+
     if (this.input.keyboard.addKey("SPACE").isDown) {
-      //this.input.keyboard.addKey('SPACE').isUp
+      if (!this.spaceVerrou) {
+        let temp = new Bombe(
+          this,
+          this.sorciere.x,
+          this.sorciere.y,
+          5,
+          "bomb",
+          "bombe",
+          32,
+          32
+        );
+        this.add.existing(temp, 1);
+        this.spaceVerrou = true;
+      }
     }
 
     if (this.cursors.left.isDown && this.sorciere.x > 32) {
