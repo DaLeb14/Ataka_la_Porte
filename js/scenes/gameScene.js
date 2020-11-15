@@ -12,7 +12,7 @@ export class GameScene extends Phaser.Scene {
 
     this.sorciere;
     this.mapLayers = new Map();
-    this.monstres = new Map();
+    this.monstres;
     this.pentagrammes = new Map();
     this.cibleMonstre;
     this.spaceVerrou = false;
@@ -117,8 +117,14 @@ export class GameScene extends Phaser.Scene {
 
     let level = 1;
     this.cibleMonstre = [835, 403];
+
     // player monster
+    this.monstres = this.add.group();
     this.genereEnnemis();
+  }
+
+  hitBomb(bomb, unit) {
+    unit.hitBomb(bomb, unit);
   }
 
   update() {
@@ -142,7 +148,11 @@ export class GameScene extends Phaser.Scene {
           32
         );
         this.add.existing(temp, 1);
+
         this.spaceVerrou = true;
+
+        this.monstres;
+        this.physics.add.overlap(temp, this.monstres, this.hitBomb, null, this);
       }
     }
 
@@ -233,12 +243,12 @@ export class GameScene extends Phaser.Scene {
             );
             let layerTemp = this.mapLayers.get("mur_invisible_sans_porte");
 
-            this.monstres.set(idMonstre, temp);
+            this.monstres.add(temp);
 
             this.physics.add.collider(
               temp,
               layerTemp,
-              function () {
+              () => {
                 temp.eviteObstacle();
               },
               null,
@@ -248,7 +258,7 @@ export class GameScene extends Phaser.Scene {
             this.physics.add.collider(
               temp,
               this.sorciere,
-              function () {
+              () => {
                 temp.eviteObstacle();
               },
               null,

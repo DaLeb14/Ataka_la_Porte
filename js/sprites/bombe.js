@@ -7,9 +7,12 @@ export class Bombe extends Phaser.GameObjects.Sprite {
     this.setScale(1);
 
     this.setDepth(z);
-
+    //scene.physics.add.existing(this);
     this.creeAnimations(scene, texture);
-
+    scene.physics.world.enable(this);
+    this.body.setBounceX(1);
+    //???
+    this.body.setVelocity(Phaser.Math.Between(-2, 2), 10);
     this.etat = "explose";
     this.play("explose");
   }
