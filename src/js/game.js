@@ -1,16 +1,14 @@
 "use strict";
 
-import Phaser from "./imports/phaser.min.js";
+// import Phaser from "./imports/phaser.min.js";
 import { GameScene } from "./scenes/gameScene";
 import { TitleScene } from "./scenes/titleScene";
 
 class MyGame extends Phaser.Game {
   constructor() {
-    this.gameScene = new GameScene();
-    this.titleScene = new TitleScene();
+    // super(1200, 800, Phaser.CANVAS, "content", null);
 
-    //* Game scene */
-    this.config = {
+    const config = {
       type: Phaser.AUTO,
       parent: "phaser-example",
       width: 1000,
@@ -22,14 +20,20 @@ class MyGame extends Phaser.Game {
       scene: {},
     };
 
-    this.game = new Phaser.Game(config);
+    super(config);
+
+    // this.gameScene = new GameScene();
+    // this.titleScene = new TitleScene();
 
     // load scenes
-    this.game.scene.add("titleScene", titleScene);
-    this.game.scene.add("game", gameScene);
+    // this.game.scene.add("titleScene", this.titleScene);
+    // this.game.scene.add("game", this.gameScene);
+
+    this.scene.add("titleScene", new TitleScene());
+    this.scene.add("game", new GameScene());
 
     // start title
-    this.game.scene.start("titleScene");
+    this.scene.start("titleScene");
   }
 }
 

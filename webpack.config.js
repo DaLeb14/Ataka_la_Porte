@@ -17,7 +17,7 @@ module.exports = {
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: "babel-loader",
-          options: { presets: ["env"] },
+          options: { presets: ["@babel/preset-env"] },
         },
       },
     ],
@@ -26,10 +26,10 @@ module.exports = {
     extensions: [".js"],
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: "src/index.html",
-      cache: false,
-    }),
+    // new HtmlWebpackPlugin({
+    //   template: "./src/html/index.html",
+    //   cache: false,
+    // }),
     // new CopyPlugin({
     //   patterns: [{ from: "src/style.css", to: "style.css" }],
     // }),
