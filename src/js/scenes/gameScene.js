@@ -22,29 +22,29 @@ export class GameScene extends Phaser.Scene {
 
   preload() {
     //Map
-    this.load.image("tiles", "../assets/tilemaps/images/atakala.png");
-    this.load.tilemapTiledJSON("map", "../assets/tilemaps/atakala_map.json");
+    this.load.image("tiles", "./src/assets/tilemaps/images/atakala.png");
+    this.load.tilemapTiledJSON("map", "./src/assets/tilemaps/atakala_map.json");
 
     //Hero
     this.load.atlas(
       "hero",
-      "../assets/sprites/images/hero-sheet.png",
-      "../assets/sprites/hero.json"
+      "./src/assets/sprites/images/hero-sheet.png",
+      "./src/assets/sprites/hero.json"
     );
     this.load.atlas(
       "monster",
-      "../assets/sprites/images/monster-sheet.png",
-      "../assets/sprites/monster.json"
+      "./src/assets/sprites/images/monster-sheet.png",
+      "./src/assets/sprites/monster.json"
     );
     this.load.atlas(
       "pentagramme",
-      "../assets/sprites/images/pentagramme.png",
-      "../assets/sprites/pentagramme.json"
+      "./src/assets/sprites/images/pentagramme.png",
+      "./src/assets/sprites/pentagramme.json"
     );
     this.load.atlas(
       "bomb",
-      "../assets/sprites/images/bomb-sheet.png",
-      "../assets/sprites/bomb.json"
+      "./src/assets/sprites/images/bomb-sheet.png",
+      "./src/assets/sprites/bomb.json"
     );
   }
 
