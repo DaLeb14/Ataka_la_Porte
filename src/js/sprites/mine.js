@@ -1,12 +1,11 @@
 "use strict";
 
-export class Bombe extends Phaser.GameObjects.Sprite {
+export class Mine extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, z, texture, type) {
     super(scene, x, y, type, 0);
 
     this.setScale(1);
     this.setDepth(z);
-    //scene.physics.add.existing(this);
     this.creeAnimations(scene, texture);
     this.scene.physics.world.enable(this);
 
@@ -15,12 +14,6 @@ export class Bombe extends Phaser.GameObjects.Sprite {
     //this.body.setVelocity(Phaser.Math.Between(-2, 2), 10);
     this.etat = "pose";
     this.play("pose");
-  }
-
-  explose() {
-    // this.play("explose");
-    // this.etat = "explose";
-    //this.remove();
   }
 
   creeAnimations(scene, texture) {
@@ -48,10 +41,10 @@ export class Bombe extends Phaser.GameObjects.Sprite {
     });
 
     scene.anims.create({
-      key: "explose",
+      key: "end",
       frames: scene.anims.generateFrameNames(texture, {
-        start: 9,
-        end: 25,
+        start: 10,
+        end: 15,
         zeroPad: 0,
         prefix: texture + " ",
         suffix: ".png",

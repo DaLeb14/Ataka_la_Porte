@@ -3,7 +3,7 @@
 import { Sorciere } from "../units/sorciere";
 import { Monster } from "../units/monster";
 import { Pentagramme } from "../sprites/pentagramme";
-import { Bombe } from "../sprites/bombe";
+import { Mine } from "../sprites/mine";
 
 // Our scenes
 export class GameScene extends Phaser.Scene {
@@ -123,9 +123,10 @@ export class GameScene extends Phaser.Scene {
     this.genereEnnemis();
   }
 
-  hitBomb(bomb, unit) {
-    bomb.explose();
-    //unit.hitBomb(bomb, unit);
+  hitMine(mine, unit) {
+    unit.brule();
+    // mine.etat = "end";
+    // mine.play("end");
   }
 
   update() {
@@ -138,7 +139,7 @@ export class GameScene extends Phaser.Scene {
 
     if (this.input.keyboard.addKey("SPACE").isDown) {
       if (!this.spaceVerrou) {
-        let temp = new Bombe(
+        let temp = new Mine(
           this,
           this.sorciere.x,
           this.sorciere.y,
@@ -153,7 +154,7 @@ export class GameScene extends Phaser.Scene {
         this.spaceVerrou = true;
 
         this.monstres;
-        this.physics.add.overlap(temp, this.monstres, this.hitBomb, null, null);
+        this.physics.add.overlap(temp, this.monstres, this.hitMine, null, null);
       }
     }
 

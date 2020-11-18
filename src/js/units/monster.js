@@ -15,6 +15,14 @@ export class Monster extends Unit {
     this.play("monster-walk-up");
   }
 
+  brule() {
+    // this.body.setVelocityY(30);
+    this.anims.stop();
+    this.play("monster-brule");
+    this.direction = "down";
+    //this.body.setVelocityY(0);
+  }
+
   avance() {
     this.direction = "up";
     this.play("monster-walk-up");
@@ -73,8 +81,8 @@ export class Monster extends Unit {
     scene.anims.create({
       key: "monster-walk-left",
       frames: scene.anims.generateFrameNames(texture, {
-        start: 10,
-        end: 12,
+        start: 9,
+        end: 11,
         zeroPad: 1,
         prefix: texture + " ",
         suffix: ".png",
@@ -84,10 +92,23 @@ export class Monster extends Unit {
     });
 
     scene.anims.create({
+      key: "monster-brule",
+      frames: scene.anims.generateFrameNames(texture, {
+        start: 12,
+        end: 25,
+        zeroPad: 1,
+        prefix: texture + " ",
+        suffix: ".png",
+      }),
+      frameRate: 3,
+      repeat: 0,
+    });
+
+    scene.anims.create({
       key: "monster-walk-right",
       frames: scene.anims.generateFrameNames(texture, {
-        start: 4,
-        end: 6,
+        start: 3,
+        end: 5,
         zeroPad: 1,
         prefix: texture + " ",
         suffix: ".png",
@@ -99,8 +120,8 @@ export class Monster extends Unit {
     scene.anims.create({
       key: "monster-walk-up",
       frames: scene.anims.generateFrameNames(texture, {
-        start: 1,
-        end: 3,
+        start: 0,
+        end: 2,
         zeroPad: 1,
         prefix: texture + " ",
         suffix: ".png",
@@ -112,8 +133,8 @@ export class Monster extends Unit {
     scene.anims.create({
       key: "monster-walk-down",
       frames: scene.anims.generateFrameNames(texture, {
-        start: 7,
-        end: 9,
+        start: 6,
+        end: 8,
         zeroPad: 1,
         prefix: texture + " ",
         suffix: ".png",
@@ -125,8 +146,8 @@ export class Monster extends Unit {
     scene.anims.create({
       key: "monster-stand",
       frames: scene.anims.generateFrameNames(texture, {
-        start: 8,
-        end: 8,
+        start: 7,
+        end: 7,
         zeroPad: 1,
         prefix: texture + " ",
         suffix: ".png",

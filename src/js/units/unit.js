@@ -13,12 +13,4 @@ export class Unit extends Phaser.GameObjects.Sprite {
 
     scene.physics.world.enable(this);
   }
-
-  hitBomb(bomb, unit) {
-    //this.physics.pause();
-
-    unit.setTint(0xff0000);
-
-    //player.anims.play("turn");
-  }
 }
