@@ -18,8 +18,8 @@ export class Pentagramme extends Phaser.GameObjects.Sprite {
     scene.anims.create({
       key: "actif",
       frames: scene.anims.generateFrameNames(texture, {
-        start: 1,
-        end: 6,
+        start: 0,
+        end: 5,
         zeroPad: 1,
         prefix: texture + " ",
         suffix: ".png",
@@ -31,8 +31,8 @@ export class Pentagramme extends Phaser.GameObjects.Sprite {
     scene.anims.create({
       key: "stand",
       frames: scene.anims.generateFrameNames(texture, {
-        start: 1,
-        end: 1,
+        start: 0,
+        end: 0,
         zeroPad: 1,
         prefix: texture + " ",
         suffix: ".png",

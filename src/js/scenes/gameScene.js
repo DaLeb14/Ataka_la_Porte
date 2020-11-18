@@ -124,7 +124,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   hitBomb(bomb, unit) {
-    unit.hitBomb(bomb, unit);
+    bomb.explose();
+    //unit.hitBomb(bomb, unit);
   }
 
   update() {
@@ -152,7 +153,7 @@ export class GameScene extends Phaser.Scene {
         this.spaceVerrou = true;
 
         this.monstres;
-        this.physics.add.overlap(temp, this.monstres, this.hitBomb, null, this);
+        this.physics.add.overlap(temp, this.monstres, this.hitBomb, null, null);
       }
     }
 

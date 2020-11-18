@@ -19,8 +19,8 @@ export class Sorciere extends Unit {
     scene.anims.create({
       key: "walk-left",
       frames: scene.anims.generateFrameNames(texture, {
-        start: 10,
-        end: 12,
+        start: 9,
+        end: 11,
         zeroPad: 1,
         prefix: texture + " ",
         suffix: ".png",
@@ -32,8 +32,8 @@ export class Sorciere extends Unit {
     scene.anims.create({
       key: "walk-right",
       frames: scene.anims.generateFrameNames(texture, {
-        start: 4,
-        end: 6,
+        start: 3,
+        end: 5,
         zeroPad: 1,
         prefix: texture + " ",
         suffix: ".png",
@@ -45,8 +45,8 @@ export class Sorciere extends Unit {
     scene.anims.create({
       key: "walk-up",
       frames: scene.anims.generateFrameNames(texture, {
-        start: 1,
-        end: 3,
+        start: 0,
+        end: 2,
         zeroPad: 1,
         prefix: texture + " ",
         suffix: ".png",
@@ -58,8 +58,8 @@ export class Sorciere extends Unit {
     scene.anims.create({
       key: "walk-down",
       frames: scene.anims.generateFrameNames(texture, {
-        start: 7,
-        end: 9,
+        start: 6,
+        end: 8,
         zeroPad: 1,
         prefix: texture + " ",
         suffix: ".png",
