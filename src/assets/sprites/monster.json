@@ -211,7 +211,7 @@
  "meta": {
   "app": "http://www.aseprite.org/",
   "version": "1.2.25-x64",
-  "image": "monster-sheet.png",
+  "image": "monster-sheet2.png",
   "format": "RGBA8888",
   "size": { "w": 832, "h": 32 },
   "scale": "1",

@@ -7,31 +7,48 @@ export class Monster extends Unit {
 
     //Agrandissement
     this.setScale(1.3);
-
+    this.etat = "actif";
     this.creeAnimations(scene, texture);
     this.cibleMonstre = scene.cibleMonstre;
-
     this.direction = "up";
     this.play("monster-walk-up");
   }
 
   brule() {
-    // this.body.setVelocityY(30);
+    this.etat = "brule";
     this.anims.stop();
     this.play("monster-brule");
+    this.body.setVelocityY(30);
     this.direction = "down";
-    //this.body.setVelocityY(0);
+
+    setTimeout(() => {
+      this.dead();
+    }, 5000);
   }
 
   avance() {
-    this.direction = "up";
-    this.play("monster-walk-up");
-    this.body.setVelocityY(-30);
+    if (this.etat == "actif") {
+      this.direction = "up";
+      this.play("monster-walk-up");
+      this.body.setVelocityY(-30);
 
-    var meAndMylself = this;
-    setTimeout(() => {
-      meAndMylself.corrigeTrajectoire();
-    }, 3000);
+      var meAndMylself = this;
+
+      setTimeout(() => {
+        meAndMylself.corrigeTrajectoire();
+      }, 3000);
+    }
+
+    if (this.etat == "brule") {
+      this.brule();
+    }
+  }
+
+  dead() {
+    this.scene.physics.world.disable(this);
+    this.body.setVelocityX(0);
+    this.body.setVelocityY(0);
+    this.direction = "death";
   }
 
   gauche() {
@@ -53,8 +70,10 @@ export class Monster extends Unit {
   }
 
   eviteObstacle() {
-    this.recul();
-    this.corrigeTrajectoire();
+    if (this.etat == "actif") {
+      this.recul();
+      this.corrigeTrajectoire();
+    }
   }
 
   corrigeTrajectoire() {
@@ -89,19 +108,6 @@ export class Monster extends Unit {
       }),
       frameRate: 3,
       repeat: -1,
-    });
-
-    scene.anims.create({
-      key: "monster-brule",
-      frames: scene.anims.generateFrameNames(texture, {
-        start: 12,
-        end: 25,
-        zeroPad: 1,
-        prefix: texture + " ",
-        suffix: ".png",
-      }),
-      frameRate: 3,
-      repeat: 0,
     });
 
     scene.anims.create({
@@ -153,6 +159,19 @@ export class Monster extends Unit {
         suffix: ".png",
       }),
       frameRate: 1,
+      repeat: 0,
+    });
+
+    scene.anims.create({
+      key: "monster-brule",
+      frames: scene.anims.generateFrameNames(texture, {
+        start: 12,
+        end: 25,
+        zeroPad: 1,
+        prefix: texture + " ",
+        suffix: ".png",
+      }),
+      frameRate: 4,
       repeat: 0,
     });
   }

@@ -32,8 +32,8 @@ export class GameScene extends Phaser.Scene {
       "./src/assets/sprites/hero.json"
     );
     this.load.atlas(
-      "monster",
-      "./src/assets/sprites/images/monster-sheet.png",
+      "monster-sheet",
+      "./src/assets/sprites/images/monster-sheet2.png",
       "./src/assets/sprites/monster.json"
     );
     this.load.atlas(
@@ -42,7 +42,7 @@ export class GameScene extends Phaser.Scene {
       "./src/assets/sprites/pentagramme.json"
     );
     this.load.atlas(
-      "bomb",
+      "bomb-sheet",
       "./src/assets/sprites/images/bomb-sheet.png",
       "./src/assets/sprites/bomb.json"
     );
@@ -124,9 +124,10 @@ export class GameScene extends Phaser.Scene {
   }
 
   hitMine(mine, unit) {
-    unit.brule();
-    // mine.etat = "end";
-    // mine.play("end");
+    setTimeout(() => {
+      unit.brule();
+    }, 1000);
+    mine.explose();
   }
 
   update() {
@@ -144,10 +145,8 @@ export class GameScene extends Phaser.Scene {
           this.sorciere.x,
           this.sorciere.y,
           5,
-          "bomb",
-          "bombe",
-          32,
-          32
+          "bomb-sheet",
+          "bombe"
         );
         this.add.existing(temp, 1);
 
@@ -207,9 +206,7 @@ export class GameScene extends Phaser.Scene {
         coordonneesPentagrammeY[i],
         5,
         "pentagramme",
-        nomPentagramme,
-        32,
-        32
+        nomPentagramme
       );
       this.add.existing(temp, 1);
       this.pentagrammes.set(nomPentagramme, temp);
@@ -238,7 +235,7 @@ export class GameScene extends Phaser.Scene {
               unPentagramme.x,
               unPentagramme.y,
               50,
-              "monster",
+              "monster-sheet",
               idMonstre,
               32,
               32

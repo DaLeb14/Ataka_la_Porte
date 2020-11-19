@@ -1,6 +1,5 @@
 "use strict";
 import { Unit } from "./unit";
-//import { Physics } from "./import/@babylonjs/core/Physics/physicsEngineComponent";
 
 export class Sorciere extends Unit {
   constructor(scene, x, y, z, texture, type, hp, damage) {

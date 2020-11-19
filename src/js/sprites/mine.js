@@ -8,12 +8,19 @@ export class Mine extends Phaser.GameObjects.Sprite {
     this.setDepth(z);
     this.creeAnimations(scene, texture);
     this.scene.physics.world.enable(this);
-
-    //this.body.setBounceX(1);
-    //???
-    //this.body.setVelocity(Phaser.Math.Between(-2, 2), 10);
     this.etat = "pose";
     this.play("pose");
+    setTimeout(() => {
+      this.explose();
+    }, 10000);
+  }
+
+  explose() {
+    if (this.etat == "pose") {
+      this.etat = "end";
+      this.play("end");
+      this.scene.physics.world.disable(this);
+    }
   }
 
   creeAnimations(scene, texture) {
@@ -26,7 +33,7 @@ export class Mine extends Phaser.GameObjects.Sprite {
         prefix: texture + " ",
         suffix: ".png",
       }),
-      frameRate: 6,
+      frameRate: 4,
       repeat: 0,
       repeatDelay: 0,
       yoyo: false,
@@ -49,7 +56,7 @@ export class Mine extends Phaser.GameObjects.Sprite {
         prefix: texture + " ",
         suffix: ".png",
       }),
-      frameRate: 40,
+      frameRate: 4,
       repeat: 0,
       repeatDelay: 0,
       yoyo: false,
