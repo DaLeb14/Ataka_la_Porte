@@ -13,7 +13,12 @@ export class TitleScene extends Phaser.Scene {
     var bg = this.add.sprite(0, 0, "background");
     bg.setOrigin(0, 0);
 
-    var text = this.add.text(100, 100, "Welcome to my game!");
+    var text = this.add.text(300, 300, "Welcome to my game !!!", {
+      fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+      fontSize: "35px",
+      backgroundColor: "grey",
+      color: "white",
+    });
     text.setInteractive({ useHandCursor: true });
     text.on("pointerdown", () => this.clickButton());
   }

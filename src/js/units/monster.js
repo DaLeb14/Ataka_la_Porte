@@ -2,28 +2,34 @@
 import { Unit } from "./unit";
 
 export class Monster extends Unit {
-  constructor(scene, x, y, z, texture, type, hp, damage) {
+  constructor(scene, x, y, z, cible, texture, type, hp, damage) {
     super(scene, x, y, z, texture, type, hp, damage);
 
     //Agrandissement
     this.setScale(1.3);
-    this.etat = "actif";
     this.creeAnimations(scene, texture);
-    this.cibleMonstre = scene.cibleMonstre;
+    this.cibleMonstre = cible;
     this.direction = "up";
     this.play("monster-walk-up");
   }
 
   brule() {
+    this.scene.augmenteScore(10);
     this.etat = "brule";
     this.anims.stop();
     this.play("monster-brule");
     this.body.setVelocityY(30);
     this.direction = "down";
 
-    setTimeout(() => {
-      this.dead();
-    }, 5000);
+    this.on(
+      "animationcomplete",
+      function (animation, frame) {
+        if (animation.key === "monster-brule") {
+          this.dead();
+        }
+      },
+      this
+    );
   }
 
   avance() {
@@ -57,7 +63,7 @@ export class Monster extends Unit {
     this.body.setVelocityX(-30);
   }
 
-  recul() {
+  recule() {
     this.direction = "down";
     this.play("monster-walk-down");
     this.body.setVelocityY(30);
@@ -71,7 +77,7 @@ export class Monster extends Unit {
 
   eviteObstacle() {
     if (this.etat == "actif") {
-      this.recul();
+      this.recule();
       this.corrigeTrajectoire();
     }
   }

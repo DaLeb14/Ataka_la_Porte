@@ -1,6 +1,5 @@
 "use strict";
 
-// import Phaser from "./imports/phaser.min.js";
 import { GameScene } from "./scenes/gameScene";
 import { TitleScene } from "./scenes/titleScene";
 

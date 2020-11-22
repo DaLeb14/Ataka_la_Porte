@@ -6,13 +6,14 @@ export class Mine extends Phaser.GameObjects.Sprite {
 
     this.setScale(1);
     this.setDepth(z);
+    this.dureeDeVie = 10000;
     this.creeAnimations(scene, texture);
     this.scene.physics.world.enable(this);
     this.etat = "pose";
     this.play("pose");
     setTimeout(() => {
       this.explose();
-    }, 10000);
+    }, this.dureeDeVie);
   }
 
   explose() {
@@ -50,14 +51,14 @@ export class Mine extends Phaser.GameObjects.Sprite {
     scene.anims.create({
       key: "end",
       frames: scene.anims.generateFrameNames(texture, {
-        start: 10,
+        start: 9,
         end: 15,
         zeroPad: 0,
         prefix: texture + " ",
         suffix: ".png",
       }),
-      frameRate: 4,
-      repeat: 0,
+      frameRate: 0.5,
+      repeat: 1,
       repeatDelay: 0,
       yoyo: false,
       skipMissedFrames: true,
