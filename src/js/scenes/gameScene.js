@@ -4,7 +4,7 @@ import { Sorciere } from "../units/sorciere";
 import { Monster } from "../units/monster";
 import { Pentagramme } from "../sprites/pentagramme";
 import { Mine } from "../sprites/mine";
-import { Niveau } from "./game/niveau";
+import { Niveau } from "../game/niveau";
 
 // Our scenes
 export class GameScene extends Phaser.Scene {

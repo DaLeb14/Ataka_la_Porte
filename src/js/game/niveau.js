@@ -1,4 +1,4 @@
-class Niveau {
+export class Niveau {
   constructor(num) {
     this.num = num;
   }
