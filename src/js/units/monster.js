@@ -38,6 +38,10 @@ export class Monster extends Unit {
       this.play("monster-walk-up");
       this.body.setVelocityY(-30);
 
+      if (this.y < 0) {
+        this.scene.augmenteMonstresPasses();
+      }
+
       var meAndMylself = this;
 
       setTimeout(() => {
@@ -55,6 +59,7 @@ export class Monster extends Unit {
     this.body.setVelocityX(0);
     this.body.setVelocityY(0);
     this.direction = "death";
+    this.scene.checkFinDeNiveau();
   }
 
   gauche() {

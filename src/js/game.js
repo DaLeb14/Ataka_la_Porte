@@ -2,6 +2,7 @@
 
 import { GameScene } from "./scenes/gameScene";
 import { TitleScene } from "./scenes/titleScene";
+import { Niveau } from "./game/niveau";
 
 class MyGame extends Phaser.Game {
   constructor() {
@@ -19,8 +20,9 @@ class MyGame extends Phaser.Game {
 
     super(config);
 
+    const niveauDuJeu = new Niveau(0);
     this.scene.add("titleScene", new TitleScene());
-    this.scene.add("game", new GameScene());
+    this.scene.add("game", new GameScene(niveauDuJeu));
 
     // start title
     this.scene.start("titleScene");

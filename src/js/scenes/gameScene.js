@@ -4,10 +4,11 @@ import { Sorciere } from "../units/sorciere";
 import { Monster } from "../units/monster";
 import { Pentagramme } from "../sprites/pentagramme";
 import { Mine } from "../sprites/mine";
+import { Niveau } from "./game/niveau";
 
 // Our scenes
 export class GameScene extends Phaser.Scene {
-  constructor() {
+  constructor(niveauDuJeu) {
     super({ key: "gameScene" });
 
     this.sorciere;
@@ -177,10 +178,23 @@ export class GameScene extends Phaser.Scene {
   }
 
   augmenteMonstresPasses() {
-    this.nbMonstresPasse = this.nbMonstresPasse + nb;
+    this.nbMonstresPasse = this.nbMonstresPasse + 1;
     this.textMonstresPasse.setText(
       "Monstres passés : " + this.nbMonstresPasse + "/10"
     );
+    checkFinDeNiveau();
+  }
+
+  checkFinDeNiveau() {
+    this.add
+      .text(500, 500, "The end !", {
+        fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+        fontSize: "40px",
+        //backgroundColor: "grey",
+        color: "white",
+      })
+      .setScrollFactor(0)
+      .setDepth(1000);
   }
 
   majPtsVieEcran() {
@@ -193,6 +207,8 @@ export class GameScene extends Phaser.Scene {
         .setDepth(1000);
       this.imageGroupCoeur.add(image);
     }
+
+    this.scene.checkFinDeNiveau();
   }
 
   majPtsManaEcran() {
