@@ -20,7 +20,7 @@ class MyGame extends Phaser.Game {
 
     super(config);
 
-    const niveauDuJeu = new Niveau(0);
+    const niveauDuJeu = new Niveau(0, 10);
     this.scene.add("titleScene", new TitleScene());
     this.scene.add("game", new GameScene(niveauDuJeu));
 

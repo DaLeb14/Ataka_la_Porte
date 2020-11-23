@@ -1,6 +1,7 @@
 export class Niveau {
-  constructor(num) {
+  constructor(num, nbMonstresParZone) {
     this.num = num;
+    this.nbMonstresParZone = nbMonstresParZone;
   }
 
   getNiveauSuperieur() {

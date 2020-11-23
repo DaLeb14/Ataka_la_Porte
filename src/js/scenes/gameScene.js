@@ -18,10 +18,14 @@ export class GameScene extends Phaser.Scene {
     this.spaceVerrou = false;
     this.score = 0;
     this.textScore;
-    this.nbMonstresPasse = 0;
-    this.textMonstresPasse;
+    this.nbMonstresMorts = 0;
+    this.textMonstresMorts;
+    this.nbMonstresPasses = 0;
+    this.textMonstresPasses;
     this.niveau;
     this.textNiveau;
+    this.nombreDeMonstresParPentagramme = niveauDuJeu.nbMonstresParZone;
+    this.nbMontresTotal = this.nombreDeMonstresParPentagramme * 5;
   }
 
   init() {}
@@ -147,10 +151,10 @@ export class GameScene extends Phaser.Scene {
     });
     this.textScore.setScrollFactor(0).setDepth(1000);
 
-    this.textMonstresPasse = this.add.text(
+    this.textMonstresPasses = this.add.text(
       780,
       30,
-      "Monstres passés : " + this.nbMonstresPasse + "/10",
+      "Monstres passés : " + this.nbMonstresPasses,
       {
         fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
         fontSize: "20px",
@@ -158,7 +162,20 @@ export class GameScene extends Phaser.Scene {
         color: "white",
       }
     );
-    this.textMonstresPasse.setScrollFactor(0).setDepth(1000);
+    this.textMonstresPasses.setScrollFactor(0).setDepth(1000);
+
+    this.textMonstresMorts = this.add.text(
+      780,
+      55,
+      "Monstres tués : " + this.nbMonstresMorts + "/" + this.nbMontresTotal,
+      {
+        fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+        fontSize: "20px",
+        //backgroundColor: "grey",
+        color: "white",
+      }
+    );
+    this.textMonstresMorts.setScrollFactor(0).setDepth(1000);
 
     // player monster
     this.monstres = this.add.group();
@@ -178,23 +195,61 @@ export class GameScene extends Phaser.Scene {
   }
 
   augmenteMonstresPasses() {
-    this.nbMonstresPasse = this.nbMonstresPasse + 1;
-    this.textMonstresPasse.setText(
-      "Monstres passés : " + this.nbMonstresPasse + "/10"
+    this.nbMonstresPasses = this.nbMonstresPasses + 1;
+    this.textMonstresPasses.setText(
+      "Monstres passés : " + this.nbMonstresPasses
     );
-    checkFinDeNiveau();
+    this.checkFinDeNiveau();
+  }
+
+  augmenteMonstresMort() {
+    this.nbMonstresMorts = this.nbMonstresMorts + 1;
+    this.textMonstresMorts.setText(
+      "Monstres tués : " + this.nbMonstresMorts + "/" + this.nbMontresTotal
+    ),
+      this.augmenteScore(10);
+    this.checkFinDeNiveau();
   }
 
   checkFinDeNiveau() {
-    this.add
-      .text(500, 500, "The end !", {
-        fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-        fontSize: "40px",
-        //backgroundColor: "grey",
-        color: "white",
-      })
-      .setScrollFactor(0)
-      .setDepth(1000);
+    if (this.sorciere.ptsVie < 1) {
+      this.add
+        .text(500, 500, "The end ! 1", {
+          fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+          fontSize: "40px",
+          //backgroundColor: "grey",
+          color: "white",
+        })
+        .setScrollFactor(0)
+        .setDepth(1000);
+    }
+
+    if (this.nbMonstresPasses > 9) {
+      this.add
+        .text(500, 500, "The end ! 2", {
+          fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+          fontSize: "40px",
+          //backgroundColor: "grey",
+          color: "white",
+        })
+        .setScrollFactor(0)
+        .setDepth(1000);
+    }
+
+    if (
+      this.sorciere.ptsVie > 0 &&
+      this.nbMonstresPasses + this.nbMonstresMorts == this.nbMontresTotal
+    ) {
+      this.add
+        .text(500, 500, "The end ! 3", {
+          fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+          fontSize: "40px",
+          //backgroundColor: "grey",
+          color: "white",
+        })
+        .setScrollFactor(0)
+        .setDepth(1000);
+    }
   }
 
   majPtsVieEcran() {
@@ -208,7 +263,7 @@ export class GameScene extends Phaser.Scene {
       this.imageGroupCoeur.add(image);
     }
 
-    this.scene.checkFinDeNiveau();
+    this.checkFinDeNiveau();
   }
 
   majPtsManaEcran() {
@@ -250,18 +305,10 @@ export class GameScene extends Phaser.Scene {
         this.physics.add.overlap(temp, this.monstres, this.hitMine, null, null);
       }
     }
-    if (this.sorciere.etat == "actif") {
-      if (this.cursors.left.isDown && this.sorciere.x > 32) {
-        this.sorciere.gauche();
-      } else if (this.cursors.right.isDown && this.sorciere.x < 1600) {
-        this.sorciere.droite();
-      }
 
-      if (this.cursors.up.isDown && this.sorciere.y > 0) {
-        this.sorciere.avance();
-      } else if (this.cursors.down.isDown && this.sorciere.y < 1600) {
-        this.sorciere.recule();
-      }
+    if (this.sorciere.etat == "actif") {
+      this.sorciere.bougeX(this.cursors.left.isDown, this.cursors.right.isDown);
+      this.sorciere.bougeY(this.cursors.up.isDown, this.cursors.down.isDown);
 
       if (
         this.cursors.up.isUp &&
@@ -274,11 +321,11 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  end() {}
+  //end() {}
 
   genereEnnemis() {
     let nombreDePentagramme = 5;
-    let nombreDeMonstresParPentagramme = 2; //10;
+
     let delaiVagueMonstre = 5000;
     let coordonneesPentagrammeX = [400, 400, 800, 1200, 1200];
     let coordonneesPentagrammeY = [800, 1200, 1400, 1200, 800];
@@ -297,12 +344,16 @@ export class GameScene extends Phaser.Scene {
       this.pentagrammes.set(nomPentagramme, temp);
     }
 
-    this.genereMonstres(0, nombreDeMonstresParPentagramme, delaiVagueMonstre);
+    this.genereMonstres(
+      0,
+
+      delaiVagueMonstre
+    );
   }
 
   genereMonstres(
     numIteration,
-    nombreDeMonstresParPentagramme,
+
     delaiVagueMonstre
   ) {
     let numeroMonstre = 0;
@@ -367,13 +418,9 @@ export class GameScene extends Phaser.Scene {
 
     numIteration++;
 
-    if (numIteration < nombreDeMonstresParPentagramme) {
+    if (numIteration < this.nombreDeMonstresParPentagramme) {
       setTimeout(() => {
-        this.genereMonstres(
-          numIteration,
-          nombreDeMonstresParPentagramme,
-          delaiVagueMonstre
-        );
+        this.genereMonstres(numIteration, delaiVagueMonstre);
       }, delaiVagueMonstre + departAleatoireDesMonstres);
     }
   }

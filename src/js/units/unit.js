@@ -9,6 +9,8 @@ export class Unit extends Phaser.GameObjects.Sprite {
     this.damage = damage; // default damage
     this.direction = null;
     this.etat = "actif";
+    this.directionX = null;
+    this.directionY = null;
     this.setDepth(z);
 
     scene.physics.world.enable(this);

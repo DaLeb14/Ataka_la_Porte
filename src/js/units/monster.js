@@ -9,17 +9,17 @@ export class Monster extends Unit {
     this.setScale(1.3);
     this.creeAnimations(scene, texture);
     this.cibleMonstre = cible;
-    this.direction = "up";
+    this.directionY = "up";
     this.play("monster-walk-up");
   }
 
   brule() {
-    this.scene.augmenteScore(10);
+    this.scene.augmenteMonstresMort();
     this.etat = "brule";
     this.anims.stop();
     this.play("monster-brule");
     this.body.setVelocityY(30);
-    this.direction = "down";
+    this.directionY = "down";
 
     this.on(
       "animationcomplete",
@@ -34,12 +34,15 @@ export class Monster extends Unit {
 
   avance() {
     if (this.etat == "actif") {
-      this.direction = "up";
+      this.directionY = "up";
       this.play("monster-walk-up");
       this.body.setVelocityY(-30);
 
       if (this.y < 0) {
         this.scene.augmenteMonstresPasses();
+        this.anims.stop();
+        this.dead();
+        this.destroy();
       }
 
       var meAndMylself = this;
@@ -58,53 +61,60 @@ export class Monster extends Unit {
     this.scene.physics.world.disable(this);
     this.body.setVelocityX(0);
     this.body.setVelocityY(0);
-    this.direction = "death";
-    this.scene.checkFinDeNiveau();
+    this.directionX = null;
+    this.directionY = null;
+    this.etat = "death";
   }
 
   gauche() {
-    this.direction = "left";
-    this.play("monster-walk-left");
-    this.body.setVelocityX(-30);
+    if (this.etat == "actif") {
+      this.directionX = "left";
+      this.play("monster-walk-left");
+      this.body.setVelocityX(-30);
+    }
   }
 
   recule() {
-    this.direction = "down";
-    this.play("monster-walk-down");
-    this.body.setVelocityY(30);
+    if (this.etat == "actif") {
+      this.directionY = "down";
+      this.play("monster-walk-down");
+      this.body.setVelocityY(30);
+    }
   }
 
   droite() {
-    this.direction = "right";
-    this.play("monster-walk-right");
-    this.body.setVelocityX(30);
+    if (this.etat == "actif") {
+      this.directionX = "right";
+      this.play("monster-walk-right");
+      this.body.setVelocityX(30);
+    }
   }
 
   eviteObstacle() {
-    if (this.etat == "actif") {
-      this.recule();
-      this.corrigeTrajectoire();
-    }
+    this.recule();
+    this.corrigeTrajectoire();
   }
 
   corrigeTrajectoire() {
-    let marcheDevant = Math.floor(Math.random() * Math.floor(2000));
-    let porteX = this.cibleMonstre[0];
+    if (this.etat == "actif") {
+      let marcheDevant = Math.floor(Math.random() * Math.floor(2000));
+      let porteX = this.cibleMonstre[0];
 
-    if (this.x > porteX) {
-      this.gauche();
-    } else {
-      this.droite();
+      if (this.x > porteX) {
+        this.gauche();
+      } else {
+        this.droite();
+      }
+
+      if (this.x < porteX + 30 && this.x > porteX - 30) {
+        this.body.setVelocityX(0);
+      }
+
+      var meAndMylself = this;
+      setTimeout(() => {
+        meAndMylself.avance();
+      }, marcheDevant);
     }
-
-    if (this.x < porteX + 30 && this.x > porteX - 30) {
-      this.body.setVelocityX(0);
-    }
-
-    var meAndMylself = this;
-    setTimeout(() => {
-      meAndMylself.avance();
-    }, marcheDevant);
   }
 
   creeAnimations(scene, texture) {
