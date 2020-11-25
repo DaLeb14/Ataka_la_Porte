@@ -2,8 +2,8 @@
 import { Unit } from "./unit";
 
 export class Sorciere extends Unit {
-  constructor(scene, x, y, z, texture, type, ptsVie, damage) {
-    super(scene, x, y, z, texture, type, ptsVie, damage);
+  constructor(scene, x, y, z, texture, type, ptsVie, vitesse) {
+    super(scene, x, y, z, texture, type, ptsVie, vitesse);
 
     //Agrandissement
     this.setScale(1.2);
@@ -52,14 +52,14 @@ export class Sorciere extends Unit {
     if (goLeft && this.directionX != "left") {
       this.directionX = "left";
       this.play("walk-left");
-      this.body.setVelocityX(-300);
+      this.body.setVelocityX(-this.vitesse);
     }
 
     //on ne repete pas l'animation si on va deja à droite
     if (goRight && this.directionX != "right") {
       this.directionX = "right";
       this.play("walk-right");
-      this.body.setVelocityX(300);
+      this.body.setVelocityX(this.vitesse);
     }
 
     // on arrete d'aller à gauche ou à droite et on reprend l'animation en Y si elle existe
@@ -86,14 +86,14 @@ export class Sorciere extends Unit {
     if (goUp && this.directionY != "up") {
       this.directionY = "up";
       this.play("walk-up");
-      this.body.setVelocityY(-300);
+      this.body.setVelocityY(-this.vitesse);
     }
 
     //on ne repete pas l'animation si on va deja en bas
     if (goDown && this.directionY != "down") {
       this.directionY = "down";
       this.play("walk-down");
-      this.body.setVelocityY(300);
+      this.body.setVelocityY(this.vitesse);
     }
 
     // on arrete d'aller en haut ou en bas et on reprend l'animation en X si elle existe

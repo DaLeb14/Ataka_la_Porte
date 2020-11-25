@@ -2,9 +2,10 @@
 
 import { GameScene } from "./scenes/gameScene";
 import { TitleScene } from "./scenes/titleScene";
+import { EndScene } from "./scenes/endScene";
 import { Niveau } from "./game/niveau";
 
-class MyGame extends Phaser.Game {
+export class MyGame extends Phaser.Game {
   constructor() {
     const config = {
       type: Phaser.AUTO,
@@ -20,9 +21,14 @@ class MyGame extends Phaser.Game {
 
     super(config);
 
-    const niveauDuJeu = new Niveau(0, 10);
-    this.scene.add("titleScene", new TitleScene());
-    this.scene.add("game", new GameScene(niveauDuJeu));
+    this.niveauDuJeu = new Niveau();
+    this.gamePlay = new GameScene(this.niveauDuJeu);
+
+    this.scene.add("titleScene", new TitleScene(this));
+
+    this.scene.add("gameScene", this.gamePlay);
+
+    this.scene.add("endScene", new EndScene(this));
 
     // start title
     this.scene.start("titleScene");
