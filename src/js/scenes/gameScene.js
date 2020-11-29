@@ -16,19 +16,21 @@ export class GameScene extends Phaser.Scene {
     this.sorciere;
     this.mapLayers = new Map();
     this.monstres;
+    this.mines;
     this.pentagrammes = new Map();
     this.spaceVerrou = false;
-    this.score = 0;
     this.textScore;
-    this.nbMonstresMorts = 0;
-    this.nbMonstresPasses = 0;
-    this.textMonstresMorts;
-
     this.textMonstresPasses;
-    this.nbMontresTotal = this.niveauDuJeu.nbMonstresParZone * 5;
-    this.bossDeFinDeNiveau = null;
-    this.bossDeFinDeNiveauVaincu = false;
-    this.bossDeFinDeNiveauFight = false;
+    this.score = 0;
+    this.nbMonstresMorts;
+    this.nbMonstresPasses;
+    this.textMonstresMorts;
+    this.nbMontresTotal;
+    this.bossDeFinDeNiveau;
+    this.bossDeFinDeNiveauVaincu;
+    this.bossDeFinDeNiveauFight;
+    this.finDuJeu;
+    this.delaiVagueMonstre = 5000;
   }
 
   init() {}
@@ -72,6 +74,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   create() {
+    this.score = 0;
+
     this.cameras.main.setBounds(32, 32, 1600, 1600);
     this.physics.world.setBounds(0, 0, 1600, 1600);
 
@@ -107,9 +111,7 @@ export class GameScene extends Phaser.Scene {
 
     //Affichage ecran
     this.imageGroupCoeur = this.add.group();
-    this.majPtsVieEcran();
     this.imageGroupMana = this.add.group();
-    this.majPtsManaEcran();
 
     // 0 : Dynamic body
     //1 : Static body
@@ -180,22 +182,57 @@ export class GameScene extends Phaser.Scene {
     );
     this.textMonstresMorts.setScrollFactor(0).setDepth(1000);
 
-    this.startPlaying();
-
     // player monster
     this.monstres = this.add.group();
+    //mines groupe
+    this.mines = this.add.group();
+
+    this.startPlaying();
+  }
+
+  afficheText(myText, time, textX, textY) {
+    let tempText = this.add
+      .text(textX, textY, myText, {
+        fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+        fontSize: "40px",
+        //backgroundColor: "grey",
+        color: "white",
+      })
+      .setScrollFactor(0)
+      .setDepth(1000);
+    setTimeout(() => {
+      tempText.destroy();
+    }, time);
   }
 
   startPlaying() {
+    this.nbMonstresMorts = 0;
+    this.nbMonstresPasses = 0;
+    this.textMonstresMorts;
+    this.nbMontresTotal = this.niveauDuJeu.nbMonstresParZone * 5;
+    this.bossDeFinDeNiveauVaincu = false;
+    this.bossDeFinDeNiveauFight = false;
+    this.finDuJeu = false;
+    this.majPtsVieEcran();
+    this.majPtsManaEcran();
+
+    this.textMonstresPasses.setText(
+      "Monstres passés : " + this.nbMonstresPasses + "/10"
+    );
+    this.textMonstresMorts.setText(
+      "Monstres tués : " + this.nbMonstresMorts + "/" + this.nbMontresTotal
+    );
+
     if (this.niveauDuJeu.num > 1) {
-      this.afficheText("You won this battle !", 3000, 300, 400);
+      this.afficheText("You won this battle !", 2800, 300, 400);
     } else {
       this.afficheText(
         "Monsters are coming...\nProtect the gate ! ",
-        3000,
+        2800,
         300,
         400
       );
+      this.generePentagrammes();
     }
 
     setTimeout(() => {
@@ -205,11 +242,40 @@ export class GameScene extends Phaser.Scene {
         300,
         400
       );
-    }, 5000);
+    }, 3000);
 
     setTimeout(() => {
-      this.genereEnnemis();
-    }, 10000);
+      this.genereMonstres(0, this.delaiVagueMonstre);
+    }, 6000);
+  }
+
+  majPtsVieEcran() {
+    this.imageGroupCoeur.clear(true);
+
+    for (let index = 0; index < this.sorciere.ptsVie; index++) {
+      let image = this.add
+        .image(30 + index * 10, 760, "coeur")
+        .setScrollFactor(0)
+        .setDepth(1000);
+      this.imageGroupCoeur.add(image);
+    }
+
+    this.checkFinDeNiveau();
+  }
+
+  majPtsManaEcran() {
+    if (this.finDuJeu) {
+      return;
+    }
+    this.imageGroupMana.clear(true);
+
+    for (let index = 0; index < this.sorciere.mana; index++) {
+      let image = this.add
+        .image(870 + index * 10, 760, "mana")
+        .setScrollFactor(0)
+        .setDepth(1000);
+      this.imageGroupMana.add(image);
+    }
   }
 
   hitMine(mine, unit) {
@@ -246,71 +312,23 @@ export class GameScene extends Phaser.Scene {
     this.checkFinDeNiveau();
   }
 
-  checkFinDeNiveau() {
-    let numFinNiveau = 0;
+  generePentagrammes() {
+    let nombreDePentagramme = 5;
+    let coordonneesPentagrammeX = [400, 400, 800, 1200, 1200];
+    let coordonneesPentagrammeY = [800, 1200, 1400, 1200, 800];
 
-    if (this.sorciere.ptsVie < 1) {
-      this.afficheText("The end 1", 5000, 500, 500);
-      numFinNiveau = 1;
-    }
-
-    if (numFinNiveau == 0 && this.nbMonstresPasses > 9) {
-      this.afficheText("The end 2", 5000, 500, 500);
-
-      numFinNiveau = 2;
-    }
-
-    if (
-      numFinNiveau == 0 &&
-      this.nbMonstresPasses + this.nbMonstresMorts == this.nbMontresTotal
-    ) {
-      if (this.bossDeFinDeNiveauVaincu) {
-        numFinNiveau = 3;
-      } else {
-        this.afficheText("Boss is coming... For you !", 5000, 500, 500);
-        this.spaceVerrou = true;
-        setTimeout(() => {
-          this.genereBossFinDeNiveau();
-          this.spaceVerrou = true;
-        }, 5000);
-      }
-    }
-
-    this.finDeNiveau(numFinNiveau);
-  }
-
-  finDeNiveau(numFinNiveau) {
-    switch (numFinNiveau) {
-      case 0:
-        break;
-
-      case 1:
-        this.scene.switch("endScene");
-        break;
-
-      case 2:
-        this.scene.switch("endScene");
-        break;
-
-      case 3:
-        this.niveauDuJeu.getNiveauSuperieur();
-        this.nbMontresTotal = this.niveauDuJeu.nbMonstresParZone * 5;
-        this.bossDeFinDeNiveau = null;
-        this.bossDeFinDeNiveauVaincu = false;
-        this.bossDeFinDeNiveauFight = false;
-        this.nbMonstresMorts = 0;
-        this.nbMonstresPasses = 0;
-        this.textMonstresPasses.setText(
-          "Monstres passés : " + this.nbMonstresPasses + "/10"
-        );
-        this.textMonstresMorts.setText(
-          "Monstres tués : " + this.nbMonstresMorts + "/" + this.nbMontresTotal
-        );
-
-        this.startPlaying();
-        break;
-      default:
-        () => {};
+    for (let i = 0; i < nombreDePentagramme; i++) {
+      let nomPentagramme = "pentagramme" + i;
+      let temp = new Pentagramme(
+        this,
+        coordonneesPentagrammeX[i],
+        coordonneesPentagrammeY[i],
+        5,
+        "pentagramme",
+        nomPentagramme
+      );
+      this.add.existing(temp, 1);
+      this.pentagrammes.set(nomPentagramme, temp);
     }
   }
 
@@ -319,6 +337,7 @@ export class GameScene extends Phaser.Scene {
     this.monstres.clear(true);
 
     let ptDepart = this.pentagrammes.get("pentagramme2");
+
     let idMonstre = "monstreBoss" + this.niveauDuJeu.num;
 
     this.bossDeFinDeNiveau = new MonsterBoss(
@@ -338,8 +357,8 @@ export class GameScene extends Phaser.Scene {
       this.bossDeFinDeNiveau,
       this.sorciere,
       () => {
-        this.bossDeFinDeNiveau.corrigeTrajectoire();
         if (this.bossDeFinDeNiveau.etat == "actif") {
+          this.bossDeFinDeNiveau.corrigeTrajectoire();
           this.sorciere.perdPointsDeVie(1);
         }
       },
@@ -352,33 +371,85 @@ export class GameScene extends Phaser.Scene {
     this.bossDeFinDeNiveau.corrigeTrajectoire();
   }
 
-  majPtsVieEcran() {
-    this.imageGroupCoeur.clear(true);
-
-    for (let index = 0; index < this.sorciere.ptsVie; index++) {
-      let image = this.add
-        .image(30 + index * 10, 760, "coeur")
-        .setScrollFactor(0)
-        .setDepth(1000);
-      this.imageGroupCoeur.add(image);
+  checkFinDeNiveau() {
+    if (this.sorciere.ptsVie < 1) {
+      this.finDeNiveau(1);
+      return;
     }
 
-    this.checkFinDeNiveau();
+    if (this.nbMonstresPasses > 9) {
+      this.finDeNiveau(2);
+      return;
+    }
+
+    if (this.nbMonstresPasses + this.nbMonstresMorts == this.nbMontresTotal) {
+      if (this.bossDeFinDeNiveauFight && this.bossDeFinDeNiveauVaincu) {
+        this.finDeNiveau(3);
+      } else {
+        this.afficheText("Boss is coming... For you !", 5000, 500, 500);
+        this.spaceVerrou = true;
+        setTimeout(() => {
+          this.genereBossFinDeNiveau();
+          this.spaceVerrou = true;
+        }, 5000);
+      }
+    }
   }
 
-  majPtsManaEcran() {
-    this.imageGroupMana.clear(true);
+  finDeNiveau(numFinNiveau) {
+    switch (numFinNiveau) {
+      case 0:
+        break;
 
-    for (let index = 0; index < this.sorciere.mana; index++) {
-      let image = this.add
-        .image(870 + index * 10, 760, "mana")
-        .setScrollFactor(0)
-        .setDepth(1000);
-      this.imageGroupMana.add(image);
+      case 1:
+        //You're dead
+        this.arreteJeu();
+        this.sorciere.dead();
+        this.afficheText("You're dead... Too weak", 5000, 300, 500);
+        setTimeout(() => {
+          this.scene.start("endScene");
+        }, 5000);
+
+        break;
+
+      case 2:
+        //You failed!
+        this.arreteJeu();
+        this.afficheText("You failed ! Too dumb", 5000, 300, 500);
+        setTimeout(() => {
+          this.scene.start("endScene");
+        }, 5000);
+        break;
+
+      case 3:
+        this.niveauDuJeu.getNiveauSuperieur();
+        this.startPlaying();
+        break;
+      default:
+        () => {};
     }
+  }
+
+  arreteJeu() {
+    this.finDuJeu = true;
+    if (this.bossDeFinDeNiveau != null) {
+      this.bossDeFinDeNiveau.etat = "inactif";
+    }
+
+    this.monstres.children.each((monstre) => {
+      monstre.etat = "inactif";
+    });
+
+    this.mines.children.each((mine) => {
+      mine.etat = "end";
+    });
   }
 
   update() {
+    if (this.finDuJeu) {
+      return;
+    }
+
     if (this.input.keyboard.addKey("SPACE").isUp) {
       this.spaceVerrou = false;
     }
@@ -398,6 +469,7 @@ export class GameScene extends Phaser.Scene {
           "bombe"
         );
         this.add.existing(temp, 1);
+        this.mines.add(temp);
         this.sorciere.perdPointsDeMana(1);
         this.spaceVerrou = true;
 
@@ -431,45 +503,6 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  //end() {}
-
-  genereEnnemis() {
-    let nombreDePentagramme = 5;
-    let delaiVagueMonstre = 5000;
-    let coordonneesPentagrammeX = [400, 400, 800, 1200, 1200];
-    let coordonneesPentagrammeY = [800, 1200, 1400, 1200, 800];
-
-    for (let i = 0; i < nombreDePentagramme; i++) {
-      let nomPentagramme = "pentagramme" + i;
-      let temp = new Pentagramme(
-        this,
-        coordonneesPentagrammeX[i],
-        coordonneesPentagrammeY[i],
-        5,
-        "pentagramme",
-        nomPentagramme
-      );
-      this.add.existing(temp, 1);
-      this.pentagrammes.set(nomPentagramme, temp);
-    }
-
-    this.genereMonstres(0, delaiVagueMonstre);
-  }
-
-  afficheText(myText, time, textX, textY) {
-    let tempText = this.add
-      .text(textX, textY, myText, {
-        fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-        fontSize: "40px",
-        //backgroundColor: "grey",
-        color: "white",
-      })
-      .setScrollFactor(0)
-      .setDepth(1000);
-    setTimeout(() => {
-      tempText.destroy();
-    }, time);
-  }
   genereMonstres(numIteration, delaiVagueMonstre) {
     if (this.bossDeFinDeNiveauFight) {
       return;
@@ -479,12 +512,15 @@ export class GameScene extends Phaser.Scene {
     let departAleatoireDesMonstres = 0;
 
     for (let p of this.pentagrammes.values()) {
+      if (this.finDuJeu) {
+        return;
+      }
       departAleatoireDesMonstres = Math.floor(Math.random() * Math.floor(4000));
 
       setTimeout(
         (unPentagramme) => {
           {
-            if (this.bossDeFinDeNiveauFight) {
+            if (this.bossDeFinDeNiveauFight || this.finDuJeu) {
               return;
             }
             let idMonstre = "monstre" + numeroMonstre + numIteration;
@@ -541,6 +577,9 @@ export class GameScene extends Phaser.Scene {
     numIteration++;
 
     if (numIteration < this.niveauDuJeu.nbMonstresParZone) {
+      if (this.finDuJeu) {
+        return;
+      }
       setTimeout(() => {
         this.genereMonstres(numIteration, delaiVagueMonstre);
       }, delaiVagueMonstre + departAleatoireDesMonstres);

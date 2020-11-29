@@ -28,7 +28,7 @@ export class MyGame extends Phaser.Game {
 
     this.scene.add("gameScene", this.gamePlay);
 
-    this.scene.add("endScene", new EndScene(this));
+    this.scene.add("endScene", new EndScene(this.niveauDuJeu, this.gamePlay));
 
     // start title
     this.scene.start("titleScene");

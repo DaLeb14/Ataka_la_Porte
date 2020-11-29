@@ -1,5 +1,4 @@
 "use strict";
-import { Unit } from "./unit";
 import { Monster } from "../units/monster";
 
 export class MonsterBoss extends Monster {

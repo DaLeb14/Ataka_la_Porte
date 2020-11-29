@@ -1,13 +1,10 @@
 "use strict";
 
-import { MyGame } from "../game.js";
-
 export class EndScene extends Phaser.Scene {
-  constructor(theGame) {
+  constructor(niveauDuJeu, gamePlay) {
     super({ key: "endScene" });
-    this.theGame = theGame;
-    this.score = theGame.gamePlay.score;
-    this.niveau = theGame.niveauDuJeu.num;
+    this.gamePlay = gamePlay;
+    this.niveauDuJeu = niveauDuJeu;
   }
 
   init() {}
@@ -23,7 +20,10 @@ export class EndScene extends Phaser.Scene {
     var text = this.add.text(
       300,
       300,
-      "This is the end ! Niveau :" + this.niveau + " score : " + this.score,
+      "This is the end ! Niveau :" +
+        this.niveauDuJeu.num +
+        " score : " +
+        this.gamePlay.score,
       {
         fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
         fontSize: "35px",
@@ -36,6 +36,7 @@ export class EndScene extends Phaser.Scene {
   }
 
   clickButton() {
-    this.scene.switch("titleScene");
+    this.niveauDuJeu.raz();
+    this.scene.start("titleScene");
   }
 }

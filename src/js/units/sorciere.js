@@ -14,7 +14,7 @@ export class Sorciere extends Unit {
   }
 
   perdPointsDeVie(nb) {
-    let saveTint = this.tint;
+    //let saveTint = this.tint;
     let saveVeloX = this.body.velocity.x;
     let saveVeloY = this.body.velocity.y;
     this.tint = 0xff0000;
@@ -24,8 +24,20 @@ export class Sorciere extends Unit {
 
     setTimeout(() => {
       this.resteImmobile("actif", 0, 0);
-      this.tint = saveTint;
+      this.clearTint();
     }, 2500);
+  }
+
+  dead() {
+    this.scene.physics.world.disable(this);
+    this.anims.stop();
+    this.play("dead");
+
+    this.body.setVelocityX(0);
+    this.body.setVelocityY(0);
+    this.directionX = null;
+    this.directionY = null;
+    this.etat = "death";
   }
 
   perdPointsDeMana(nb) {
@@ -33,8 +45,10 @@ export class Sorciere extends Unit {
     this.scene.majPtsManaEcran();
 
     setTimeout(() => {
-      this.mana++;
-      this.scene.majPtsManaEcran();
+      if (!this.finDuJeu && this.scene != null) {
+        this.mana++;
+        this.scene.majPtsManaEcran();
+      }
     }, 10000);
   }
 
@@ -178,6 +192,19 @@ export class Sorciere extends Unit {
         suffix: ".png",
       }),
       frameRate: 1,
+      repeat: 0,
+    });
+
+    scene.anims.create({
+      key: "dead",
+      frames: scene.anims.generateFrameNames(texture, {
+        start: 6,
+        end: 8,
+        zeroPad: 1,
+        prefix: texture + " ",
+        suffix: ".png",
+      }),
+      frameRate: 5,
       repeat: 0,
     });
   }

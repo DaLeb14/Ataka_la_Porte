@@ -1,10 +1,8 @@
 "use strict";
-import { MyGame } from "../game.js";
 
 export class TitleScene extends Phaser.Scene {
   constructor(theGame) {
     super({ key: "titleScene" });
-    this.theGame = theGame;
   }
 
   preload() {
@@ -26,10 +24,6 @@ export class TitleScene extends Phaser.Scene {
   }
 
   clickButton() {
-    // if()
-    // {this.scene.switch("gameScene");}
-    // else{
-    this.theGame.gamePlay.scene.restart();
-    //}
+    this.scene.start("gameScene");
   }
 }

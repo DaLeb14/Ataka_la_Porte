@@ -22,47 +22,49 @@ export class Monster extends Unit {
   }
 
   brule() {
-    if (this.etat != "brule") {
-      this.scene.augmenteMonstresMort();
-      this.etat = "brule";
-      this.anims.stop();
-      this.play("monster-brule");
-      this.body.setVelocityY(30);
-      this.directionY = "down";
-
-      this.on(
-        "animationcomplete",
-        function (animation, frame) {
-          if (animation.key === "monster-brule") {
-            this.dead();
-          }
-        },
-        this
-      );
+    if (this.etat == "brule") {
+      return;
     }
+    this.scene.augmenteMonstresMort();
+    this.etat = "brule";
+    this.anims.stop();
+    this.play("monster-brule");
+    this.body.setVelocityY(30);
+    this.directionY = "down";
+
+    this.on(
+      "animationcomplete",
+      function (animation, frame) {
+        if (animation.key === "monster-brule") {
+          this.dead();
+        }
+      },
+      this
+    );
   }
 
   avance() {
-    if (this.etat == "actif") {
-      this.directionY = "up";
-      this.play("monster-walk-up");
-      this.body.setVelocityY(-this.vitesse);
-
-      if (this.y < 0) {
-        this.etat == "inactif";
-        this.scene.augmenteMonstresPasses();
-        this.anims.stop();
-        this.dead();
-        this.destroy();
-        return;
-      }
-
-      var meAndMylself = this;
-
-      setTimeout(() => {
-        meAndMylself.corrigeTrajectoire();
-      }, 2000);
+    if (this.etat != "actif") {
+      return;
     }
+    this.directionY = "up";
+    this.play("monster-walk-up");
+    this.body.setVelocityY(-this.vitesse);
+
+    if (this.y < 0) {
+      this.etat == "inactif";
+      this.scene.augmenteMonstresPasses();
+      this.anims.stop();
+      this.dead();
+      this.destroy();
+      return;
+    }
+
+    var meAndMylself = this;
+
+    setTimeout(() => {
+      meAndMylself.corrigeTrajectoire();
+    }, 2000);
   }
 
   dead() {
@@ -72,6 +74,7 @@ export class Monster extends Unit {
     this.directionX = null;
     this.directionY = null;
     this.etat = "death";
+    //this.setActive(false).setVisible(false);
 
     if (this.type == "boss") {
       this.destroy();
