@@ -6,38 +6,63 @@ export class Sorciere extends Unit {
     super(scene, x, y, z, texture, type, ptsVie, vitesse);
 
     //Agrandissement
-    this.setScale(1.2);
+    //this.setScale(1.2);
     this.creeAnimations(scene, texture);
     this.mana = 10;
     this.directionY = "down";
     this.play("walk-down");
   }
 
+  ejecteDeLaPorte() {
+    let saveVeloX = this.body.velocity.x;
+    let saveVeloY = this.body.velocity.y;
+    this.tint = 0x00bb55;
+    this.resteImmobile("inactif", 0, 40);
+
+    setTimeout(() => {
+      this.resteImmobile("actif", 0, 0);
+      this.clearTint();
+    }, 1000);
+  }
+
   perdPointsDeVie(nb) {
-    //let saveTint = this.tint;
     let saveVeloX = this.body.velocity.x;
     let saveVeloY = this.body.velocity.y;
     this.tint = 0xff0000;
     this.ptsVie = this.ptsVie - nb;
     this.scene.majPtsVieEcran();
-    this.resteImmobile("inactif", -saveVeloX / 4, -saveVeloY / 4);
 
-    setTimeout(() => {
-      this.resteImmobile("actif", 0, 0);
-      this.clearTint();
-    }, 2500);
+    if (this.ptsVie > 0) {
+      this.resteImmobile("inactif", -saveVeloX / 4, -saveVeloY / 4);
+
+      setTimeout(() => {
+        this.resteImmobile("actif", 0, 0);
+        this.clearTint();
+      }, 2500);
+    }
   }
 
   dead() {
     this.scene.physics.world.disable(this);
     this.anims.stop();
-    this.play("dead");
+    this.etat = "inactif";
+    this.body.setVelocityY(30);
+    this.directionY = "down";
+    this.play("sorciereIsDead");
 
-    this.body.setVelocityX(0);
-    this.body.setVelocityY(0);
-    this.directionX = null;
-    this.directionY = null;
-    this.etat = "death";
+    // this.on(
+    //   "animationcomplete",
+    //   function (animation, frame) {
+    //     if (animation.key === "sorciereIsDead") {
+    //       this.body.setVelocityX(0);
+    //       this.body.setVelocityY(0);
+    //       this.directionX = null;
+    //       this.directionY = null;
+    //       this.etat = "death";
+    //     }
+    //   },
+    //   this
+    // );
   }
 
   perdPointsDeMana(nb) {
@@ -183,6 +208,19 @@ export class Sorciere extends Unit {
     });
 
     scene.anims.create({
+      key: "sorciereIsDead",
+      frames: scene.anims.generateFrameNames(texture, {
+        start: 11,
+        end: 11,
+        zeroPad: 1,
+        prefix: texture + " ",
+        suffix: ".png",
+      }),
+      frameRate: 5,
+      repeat: -1,
+    });
+
+    scene.anims.create({
       key: "stand",
       frames: scene.anims.generateFrameNames(texture, {
         start: 8,
@@ -195,17 +233,6 @@ export class Sorciere extends Unit {
       repeat: 0,
     });
 
-    scene.anims.create({
-      key: "dead",
-      frames: scene.anims.generateFrameNames(texture, {
-        start: 6,
-        end: 8,
-        zeroPad: 1,
-        prefix: texture + " ",
-        suffix: ".png",
-      }),
-      frameRate: 5,
-      repeat: 0,
-    });
+    this.play("sorciereIsDead");
   }
 }

@@ -14,6 +14,7 @@ export class GameScene extends Phaser.Scene {
 
     this.niveauDuJeu = niveauDuJeu;
     this.sorciere;
+    this.doorKeeper;
     this.mapLayers = new Map();
     this.monstres;
     this.mines;
@@ -31,6 +32,8 @@ export class GameScene extends Phaser.Scene {
     this.bossDeFinDeNiveauFight;
     this.finDuJeu;
     this.delaiVagueMonstre = 5000;
+    //Porte et Objectif des montres
+    this.coordonneesPorte = [835, 403];
   }
 
   init() {}
@@ -68,6 +71,13 @@ export class GameScene extends Phaser.Scene {
       "./src/assets/sprites/bomb.json"
     );
 
+    //Mines
+    this.load.atlas(
+      "door-sheet",
+      "./src/assets/sprites/images/door.png",
+      "./src/assets/sprites/door.json"
+    );
+
     //Image coeur/Mana
     this.load.image("coeur", "./src/assets/images/heart.png");
     this.load.image("mana", "./src/assets/images/mana.png");
@@ -95,7 +105,28 @@ export class GameScene extends Phaser.Scene {
       32,
       32
     );
-    const layer6 = map.createStaticLayer("porte_invisible", tileset, 32, 32);
+
+    layer2.setCollisionByExclusion([-1]);
+    layer5.setCollisionByExclusion([-1]);
+
+    //Pour que les monstres passent sous la porte...
+    layer2.setDepth(100);
+    //Pour les pnj sur le mur
+    layer4.setDepth(101);
+
+    this.doorKeeper = this.physics.add.staticSprite(
+      this.coordonneesPorte[0] - 3,
+      this.coordonneesPorte[1] - 105,
+      "door-sheet"
+    );
+
+    this.physics.world.enable(this.doorKeeper);
+
+    this.mapLayers.set("decor", layer1);
+    this.mapLayers.set("chemins", layer3);
+    this.mapLayers.set("pnj", layer4);
+    this.mapLayers.set("mur_invisible_sans_porte", layer5);
+    // this.mapLayers.set("mur", layer2);
 
     // player hero
     this.sorciere = new Sorciere(
@@ -109,33 +140,14 @@ export class GameScene extends Phaser.Scene {
       300
     );
 
-    //Affichage ecran
-    this.imageGroupCoeur = this.add.group();
-    this.imageGroupMana = this.add.group();
-
     // 0 : Dynamic body
     //1 : Static body
     this.add.existing(this.sorciere, 0);
-
-    this.physics.add.collider(this.sorciere, layer2);
     this.physics.add.collider(this.sorciere, layer5);
-    this.physics.add.collider(this.sorciere, layer6);
 
-    layer2.setCollisionByExclusion([-1]);
-    layer5.setCollisionByExclusion([-1]);
-    layer6.setCollisionByExclusion([-1]);
-
-    //Pour que les monstres passent sous la porte...
-    layer2.setDepth(100);
-    //Pour les pnj sur le mur
-    layer4.setDepth(101);
-
-    this.mapLayers.set("decor", layer1);
-    this.mapLayers.set("chemins", layer3);
-    this.mapLayers.set("pnj", layer4);
-    this.mapLayers.set("mur_invisible_sans_porte", layer5);
-    this.mapLayers.set("porte_invisible", layer6);
-    this.mapLayers.set("mur", layer2);
+    //Affichage ecran
+    this.imageGroupCoeur = this.add.group();
+    this.imageGroupMana = this.add.group();
 
     //Evite les lignes noires autour des tiles
     this.cameras.main.roundPixels = true;
@@ -144,8 +156,30 @@ export class GameScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.cameras.main.startFollow(this.sorciere, true, 0.08, 0.08);
 
-    //Objectif des montres
-    this.coordonneesPorte = [835, 403];
+    //Porte
+    this.anims.create({
+      key: "door-blush",
+      frames: this.anims.generateFrameNames("door-sheet", {
+        start: 0,
+        end: 11,
+        zeroPad: 1,
+        prefix: "door" + " ",
+        suffix: ".png",
+      }),
+      frameRate: 20,
+      repeat: 0,
+    });
+
+    this.physics.add.collider(
+      this.sorciere,
+      this.doorKeeper,
+      () => {
+        this.doorKeeper.play("door-blush");
+        this.sorciere.ejecteDeLaPorte();
+      },
+      null,
+      null
+    );
 
     //score et autres
     this.textScore = this.add.text(780, 5, "Score : " + this.score, {
@@ -180,6 +214,7 @@ export class GameScene extends Phaser.Scene {
         color: "white",
       }
     );
+
     this.textMonstresMorts.setScrollFactor(0).setDepth(1000);
 
     // player monster

@@ -1,0 +1,114 @@
+{ "frames": {
+   "door 0.png": {
+    "frame": { "x": 0, "y": 0, "w": 192, "h": 160 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 192, "h": 160 },
+    "sourceSize": { "w": 192, "h": 160 },
+    "duration": 100
+   },
+   "door 1.png": {
+    "frame": { "x": 192, "y": 0, "w": 192, "h": 160 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 192, "h": 160 },
+    "sourceSize": { "w": 192, "h": 160 },
+    "duration": 100
+   },
+   "door 2.png": {
+    "frame": { "x": 384, "y": 0, "w": 192, "h": 160 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 192, "h": 160 },
+    "sourceSize": { "w": 192, "h": 160 },
+    "duration": 100
+   },
+   "door 3.png": {
+    "frame": { "x": 576, "y": 0, "w": 192, "h": 160 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 192, "h": 160 },
+    "sourceSize": { "w": 192, "h": 160 },
+    "duration": 100
+   },
+   "door 4.png": {
+    "frame": { "x": 768, "y": 0, "w": 192, "h": 160 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 192, "h": 160 },
+    "sourceSize": { "w": 192, "h": 160 },
+    "duration": 100
+   },
+   "door 5.png": {
+    "frame": { "x": 960, "y": 0, "w": 192, "h": 160 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 192, "h": 160 },
+    "sourceSize": { "w": 192, "h": 160 },
+    "duration": 100
+   },
+   "door 6.png": {
+    "frame": { "x": 1152, "y": 0, "w": 192, "h": 160 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 192, "h": 160 },
+    "sourceSize": { "w": 192, "h": 160 },
+    "duration": 100
+   },
+   "door 7.png": {
+    "frame": { "x": 1344, "y": 0, "w": 192, "h": 160 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 192, "h": 160 },
+    "sourceSize": { "w": 192, "h": 160 },
+    "duration": 100
+   },
+   "door 8.png": {
+    "frame": { "x": 1536, "y": 0, "w": 192, "h": 160 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 192, "h": 160 },
+    "sourceSize": { "w": 192, "h": 160 },
+    "duration": 100
+   },
+   "door 9.png": {
+    "frame": { "x": 1728, "y": 0, "w": 192, "h": 160 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 192, "h": 160 },
+    "sourceSize": { "w": 192, "h": 160 },
+    "duration": 100
+   },
+   "door 10.png": {
+    "frame": { "x": 1920, "y": 0, "w": 192, "h": 160 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 192, "h": 160 },
+    "sourceSize": { "w": 192, "h": 160 },
+    "duration": 100
+   },
+   "door 11.png": {
+    "frame": { "x": 2112, "y": 0, "w": 192, "h": 160 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 192, "h": 160 },
+    "sourceSize": { "w": 192, "h": 160 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.25-x64",
+  "image": "door.png",
+  "format": "RGBA8888",
+  "size": { "w": 2304, "h": 160 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Sprite Sheet", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}
