@@ -6,7 +6,7 @@ export class Sorciere extends Unit {
     super(scene, x, y, z, texture, type, ptsVie, vitesse);
 
     //Agrandissement
-    //this.setScale(1.2);
+    this.setScale(1.2);
     this.creeAnimations(scene, texture);
     this.mana = 10;
     this.directionY = "down";

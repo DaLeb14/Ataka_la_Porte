@@ -134,7 +134,7 @@ export class GameScene extends Phaser.Scene {
       800,
       600,
       100,
-      "sorciere",
+      "sorciere-sheet",
       "sorciere",
       10,
       300
