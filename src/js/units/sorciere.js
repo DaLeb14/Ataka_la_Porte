@@ -210,8 +210,8 @@ export class Sorciere extends Unit {
     scene.anims.create({
       key: "sorciereIsDead",
       frames: scene.anims.generateFrameNames(texture, {
-        start: 12,
-        end: 12,
+        start: 11,
+        end: 11,
         zeroPad: 1,
         prefix: texture + " ",
         suffix: ".png",

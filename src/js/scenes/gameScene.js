@@ -45,9 +45,9 @@ export class GameScene extends Phaser.Scene {
 
     //Hero
     this.load.atlas(
-      "hero",
-      "./src/assets/sprites/images/hero-sheet.png",
-      "./src/assets/sprites/hero.json"
+      "sorciere",
+      "./src/assets/sprites/images/sorciere-sheet.png",
+      "./src/assets/sprites/sorciere.json"
     );
 
     //Monstres
@@ -134,7 +134,7 @@ export class GameScene extends Phaser.Scene {
       800,
       600,
       100,
-      "hero",
+      "sorciere",
       "sorciere",
       10,
       300
