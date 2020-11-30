@@ -46,8 +46,8 @@ export class GameScene extends Phaser.Scene {
     //Hero
     this.load.atlas(
       "hero",
-      "./src/assets/sprites/images/hero-sheet5.png",
-      "./src/assets/sprites/hero5.json"
+      "./src/assets/sprites/images/hero-sheet100.png",
+      "./src/assets/sprites/hero100.json"
     );
 
     //Monstres
