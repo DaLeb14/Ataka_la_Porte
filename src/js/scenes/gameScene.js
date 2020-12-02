@@ -34,6 +34,7 @@ export class GameScene extends Phaser.Scene {
     this.delaiVagueMonstre = 5000;
     //Porte et Objectif des montres
     this.coordonneesPorte = [835, 403];
+    //this.colliders;
   }
 
   init() {}
@@ -43,9 +44,9 @@ export class GameScene extends Phaser.Scene {
     this.load.image("tiles", "./src/assets/tilemaps/images/atakala.png");
     this.load.tilemapTiledJSON("map", "./src/assets/tilemaps/atakala_map.json");
 
-    //Hero
+    //Sorciere
     this.load.atlas(
-      "sorciere",
+      "sorciere-sheet",
       "./src/assets/sprites/images/sorciere-sheet.png",
       "./src/assets/sprites/sorciere.json"
     );
@@ -149,6 +150,9 @@ export class GameScene extends Phaser.Scene {
     this.imageGroupCoeur = this.add.group();
     this.imageGroupMana = this.add.group();
 
+    //Liste des colliders entre perso
+    //this.colliders = this.add.group();
+
     //Evite les lignes noires autour des tiles
     this.cameras.main.roundPixels = true;
 
@@ -170,7 +174,7 @@ export class GameScene extends Phaser.Scene {
       repeat: 0,
     });
 
-    this.physics.add.collider(
+    let coll = this.physics.add.collider(
       this.sorciere,
       this.doorKeeper,
       () => {
@@ -180,6 +184,7 @@ export class GameScene extends Phaser.Scene {
       null,
       null
     );
+    //this.colliders.add(coll);
 
     //score et autres
     this.textScore = this.add.text(780, 5, "Score : " + this.score, {
@@ -241,6 +246,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   startPlaying() {
+    //this.colliders.clear(true);
     this.nbMonstresMorts = 0;
     this.nbMonstresPasses = 0;
     this.textMonstresMorts;
@@ -388,7 +394,7 @@ export class GameScene extends Phaser.Scene {
       this.niveauDuJeu.vitesseBoss
     );
 
-    this.physics.add.collider(
+    let coll = this.physics.add.collider(
       this.bossDeFinDeNiveau,
       this.sorciere,
       () => {
@@ -401,6 +407,7 @@ export class GameScene extends Phaser.Scene {
       null
     );
 
+    //this.colliders.add(coll);
     this.add.existing(this.bossDeFinDeNiveau, 0);
     this.bossDeFinDeNiveau.avance();
     this.bossDeFinDeNiveau.corrigeTrajectoire();
@@ -443,7 +450,7 @@ export class GameScene extends Phaser.Scene {
         this.afficheText("You're dead... Too weak", 5000, 300, 500);
         setTimeout(() => {
           this.scene.start("endScene");
-        }, 5000);
+        }, 6000);
 
         break;
 
@@ -453,7 +460,7 @@ export class GameScene extends Phaser.Scene {
         this.afficheText("You failed ! Too dumb", 5000, 300, 500);
         setTimeout(() => {
           this.scene.start("endScene");
-        }, 5000);
+        }, 4000);
         break;
 
       case 3:
@@ -466,6 +473,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   arreteJeu() {
+    //this.colliders.clear(true);
     this.finDuJeu = true;
     if (this.bossDeFinDeNiveau != null) {
       this.bossDeFinDeNiveau.etat = "inactif";
@@ -585,18 +593,24 @@ export class GameScene extends Phaser.Scene {
               null
             );
 
-            this.physics.add.collider(
+            let coll = this.physics.add.collider(
               temp,
               this.sorciere,
               () => {
                 temp.eviteObstacle();
                 if (temp.etat == "actif") {
-                  this.sorciere.perdPointsDeVie(10);
+                  this.sorciere.perdPointsDeVie(1);
+                  // Si la sorciere meurt, le monstre continue sa route
+                  if (this.sorciere.ptsVie < 1) {
+                    temp.body.setVelocityY(-temp.vitesse);
+                  }
                 }
               },
               null,
               null
             );
+
+            //this.colliders.add(coll);
 
             this.add.existing(temp, 0);
             temp.avance();

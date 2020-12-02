@@ -119,7 +119,7 @@
     "sourceSize": { "w": 32, "h": 32 },
     "duration": 100
    },
-   "sorciere-sheet 15.png": {
+   "sorciere-sheet-sheet 15.png": {
     "frame": { "x": 480, "y": 0, "w": 32, "h": 32 },
     "rotated": false,
     "trimmed": false,
@@ -170,7 +170,7 @@
   "frameTags": [
   ],
   "layers": [
-   { "name": "Sprite Sheet", "opacity": 255, "blendMode": "normal" }
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
   ],
   "slices": [
   ]
