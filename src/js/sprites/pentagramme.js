@@ -2,14 +2,11 @@
 
 export class Pentagramme extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, z, texture, type) {
-    super(scene, x, y, type, 0);
+    super(scene, x, y, texture, 0);
 
     this.setScale(1);
-
     this.setDepth(z);
-
     this.creeAnimations(scene, texture);
-
     this.etat = "actif";
     this.play("actif");
   }

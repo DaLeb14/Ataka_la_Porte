@@ -14,8 +14,8 @@ export class Sorciere extends Unit {
   }
 
   ejecteDeLaPorte() {
-    let saveVeloX = this.body.velocity.x;
-    let saveVeloY = this.body.velocity.y;
+    //let saveVeloX = this.body.velocity.x;
+    //let saveVeloY = this.body.velocity.y;
     this.tint = 0x00bb55;
     this.resteImmobile("inactif", 0, 40);
 

@@ -65,6 +65,13 @@ export class GameScene extends Phaser.Scene {
       "./src/assets/sprites/pentagramme.json"
     );
 
+    //Coeur bonus
+    this.load.atlas(
+      "coeur",
+      "./src/assets/sprites/images/coeur.png",
+      "./src/assets/sprites/coeur.json"
+    );
+
     //Mines
     this.load.atlas(
       "bomb-sheet",
@@ -80,7 +87,7 @@ export class GameScene extends Phaser.Scene {
     );
 
     //Image coeur/Mana
-    this.load.image("coeur", "./src/assets/images/heart.png");
+    this.load.image("coeurEcran", "./src/assets/images/heart.png");
     this.load.image("mana", "./src/assets/images/mana.png");
   }
 
@@ -147,7 +154,7 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.sorciere, layer5);
 
     //Affichage ecran
-    this.imageGroupCoeur = this.add.group();
+    this.imageGroupCoeurEcran = this.add.group();
     this.imageGroupMana = this.add.group();
 
     //Liste des colliders entre perso
@@ -184,13 +191,11 @@ export class GameScene extends Phaser.Scene {
       null,
       null
     );
-    //this.colliders.add(coll);
 
     //score et autres
     this.textScore = this.add.text(780, 5, "Score : " + this.score, {
       fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
       fontSize: "20px",
-      //backgroundColor: "grey",
       color: "white",
     });
     this.textScore.setScrollFactor(0).setDepth(1000);
@@ -202,7 +207,6 @@ export class GameScene extends Phaser.Scene {
       {
         fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
         fontSize: "20px",
-        //backgroundColor: "grey",
         color: "white",
       }
     );
@@ -215,7 +219,6 @@ export class GameScene extends Phaser.Scene {
       {
         fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
         fontSize: "20px",
-        //backgroundColor: "grey",
         color: "white",
       }
     );
@@ -235,7 +238,6 @@ export class GameScene extends Phaser.Scene {
       .text(textX, textY, myText, {
         fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
         fontSize: "40px",
-        //backgroundColor: "grey",
         color: "white",
       })
       .setScrollFactor(0)
@@ -291,14 +293,14 @@ export class GameScene extends Phaser.Scene {
   }
 
   majPtsVieEcran() {
-    this.imageGroupCoeur.clear(true);
+    this.imageGroupCoeurEcran.clear(true);
 
     for (let index = 0; index < this.sorciere.ptsVie; index++) {
       let image = this.add
-        .image(30 + index * 10, 760, "coeur")
+        .image(30 + index * 10, 760, "coeurEcran")
         .setScrollFactor(0)
         .setDepth(1000);
-      this.imageGroupCoeur.add(image);
+      this.imageGroupCoeurEcran.add(image);
     }
 
     this.checkFinDeNiveau();

@@ -1,5 +1,6 @@
 "use strict";
 
+import { Coeur } from "../sprites/coeur";
 import { Unit } from "./unit";
 
 export class Monster extends Unit {
@@ -77,6 +78,16 @@ export class Monster extends Unit {
     //this.setActive(false).setVisible(false);
 
     if (this.type == "boss") {
+      let coeur = new Coeur(
+        this.scene,
+        this.x,
+        this.y,
+        this.z,
+        "coeur",
+        "coeur",
+        this.scene.niveauDuJeu.num
+      );
+      this.scene.add.existing(coeur, 0);
       this.destroy();
     }
   }
