@@ -15,7 +15,7 @@ export class MonsterBoss extends Monster {
   }
 
   corrigeTrajectoire() {
-    if (this.etat != "actif") {
+    if (this.etat != "actif" || this.scene.finDuJeu) {
       return;
     }
 

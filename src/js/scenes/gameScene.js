@@ -426,16 +426,21 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
+    // Fin de la vague des monstres
     if (this.nbMonstresPasses + this.nbMonstresMorts == this.nbMontresTotal) {
+      //Boss vaincu
       if (this.bossDeFinDeNiveauFight && this.bossDeFinDeNiveauVaincu) {
         this.finDeNiveau(3);
       } else {
-        this.afficheText("Boss is coming... For you !", 5000, 500, 500);
-        this.spaceVerrou = true;
-        setTimeout(() => {
-          this.genereBossFinDeNiveau();
+        //Boss pas encore affronté
+        if (!this.bossDeFinDeNiveauFight) {
+          this.afficheText("Boss is coming... For you !", 5000, 500, 500);
           this.spaceVerrou = true;
-        }, 5000);
+          setTimeout(() => {
+            this.genereBossFinDeNiveau();
+            this.spaceVerrou = true;
+          }, 5000);
+        }
       }
     }
   }
