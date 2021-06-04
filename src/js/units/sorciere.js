@@ -26,22 +26,24 @@ export class Sorciere extends Unit {
   }
 
   perdPointsDeVie(nb) {
-    let saveVeloX = this.body.velocity.x;
-    let saveVeloY = this.body.velocity.y;
-    this.ptsVie = this.ptsVie - nb;
-    this.scene.majPtsVieEcran();
+    if (this.etat == "actif") {
+      let saveVeloX = this.body.velocity.x;
+      let saveVeloY = this.body.velocity.y;
+      this.ptsVie = this.ptsVie - nb;
+      this.scene.majPtsVieEcran();
 
-    if (this.ptsVie > 0) {
-      this.tint = 0xff0000;
-      this.resteImmobile("inactif", -saveVeloX / 4, -saveVeloY / 4);
+      if (this.ptsVie > 0) {
+        this.tint = 0xff0000;
+        this.resteImmobile("inactif", -saveVeloX / 4, -saveVeloY / 4);
 
-      setTimeout(() => {
-        //On verifie que l'etat n'a pas été changé par un autre evenement
-        if (this.etat == "inactif") {
-          this.resteImmobile("actif", 0, 0);
-          this.clearTint();
-        }
-      }, 2500);
+        setTimeout(() => {
+          //On verifie que l'etat n'a pas été changé par un autre evenement
+          if (this.etat == "inactif") {
+            this.resteImmobile("actif", 0, 0);
+            this.clearTint();
+          }
+        }, 2500);
+      }
     }
   }
 
